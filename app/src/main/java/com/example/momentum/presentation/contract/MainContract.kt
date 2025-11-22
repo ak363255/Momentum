@@ -9,7 +9,13 @@ import com.example.utils.platform.viemodel.contract.BaseEffect
 import com.example.utils.platform.viemodel.contract.BaseEvent
 import com.example.utils.platform.viemodel.contract.BaseViewState
 
-sealed class MainEvent : BaseEvent
-sealed class MainAction : BaseAction
-sealed class MainEffect : BaseEffect
-class MainViewState : BaseViewState
+sealed class MainEvent : BaseEvent{
+    data object LoadSetting : MainEvent()
+}
+sealed class MainAction : BaseAction{
+    data object OnSettingResult : MainAction()
+}
+sealed class MainEffect : BaseEffect{
+    data object GoToMainPage : MainEffect()
+}
+data class MainViewState(val res: String = "") : BaseViewState

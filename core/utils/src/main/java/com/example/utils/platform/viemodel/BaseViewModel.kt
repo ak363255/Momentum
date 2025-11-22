@@ -4,6 +4,7 @@
 
 package com.example.utils.platform.viemodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.utils.functional.Either
@@ -24,53 +25,61 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 
-abstract class BaseViewModel<E: BaseEvent,A: BaseAction,F: BaseEffect,S: BaseViewState>(
+abstract class BaseViewModel<E : BaseEvent, A : BaseAction, F : BaseEffect, S : BaseViewState>(
     private val coroutineManager: CoroutineManager,
-    private val initialState : S
-) : ViewModel(){
-    private val _state : MutableStateFlow<S> = MutableStateFlow(initialState)
-    val state : StateFlow<S> get() = _state
-    private val _effect : MutableSharedFlow<F> = MutableSharedFlow()
-    val effect : SharedFlow<F> get() = _effect
+    private val initialState: S
+) : ViewModel() {
+    val TAG = "VIEWMODEL"
+    private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
+    val state: StateFlow<S> get() = _state
+    private val _effect: MutableSharedFlow<F> = MutableSharedFlow()
+    val effect: SharedFlow<F> get() = _effect
 
-    private val event : Channel<E> = Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
+    private val event: Channel<E> =
+        Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
 
-    private val scope : CoroutineScope get() = viewModelScope
+    private val scope: CoroutineScope get() = viewModelScope
+
     init {
         start()
     }
 
-    private fun start(){
-        coroutineManager.runOnBackground(scope){
+    private fun start() {
+        coroutineManager.runOnBackground(scope) {
             event.receiveAsFlow()
-                .onEach { handleEvent(it) }
+                .onEach {
+                    Log.d(TAG,"onEach called-> $it")
+                    handleEvent(it)
+                }
                 .launchIn(scope)
         }
     }
 
-    private fun sendEffect(effect:F){
-        _effect.tryEmit(effect)
+    private suspend fun sendEffect(effect: F) {
+        Log.d(TAG,"send effect called -> $effect")
+        _effect.emit(effect)
     }
 
-    fun sendEvent(event:E){
+    fun sendEvent(event: E) {
+        Log.d(TAG,"send Event called -> ${event}")
         this.event.trySend(event)
     }
 
-    suspend fun Flow<Either<F, A>>.collectAndHandle(){
-        collect { either ->
-            when(either){
-                is Either.Left<F> -> sendEffect(either.data)
-                is Either.Right<A> -> _state.update {
-                    reduce(either.data,_state.value)
+    suspend fun Flow<Either<F, A>>.collectAndHandleFlow() {
+     collect { either ->
+         Log.d(TAG,"collect and handle called-> ${either}")
+                when (either) {
+                    is Either.Left<F> -> sendEffect(either.data)
+                    is Either.Right<A> -> _state.update {
+                        reduce(either.data, _state.value)
+                    }
                 }
             }
-        }
     }
 
 
-    abstract suspend fun handleEvent(event:E)
-    abstract suspend fun reduce(action:A,state : S):S
+    abstract suspend fun handleEvent(event: E)
+    abstract suspend fun reduce(action: A, state: S): S
 
 }
