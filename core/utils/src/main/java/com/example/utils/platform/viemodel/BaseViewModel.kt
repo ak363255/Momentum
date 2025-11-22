@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 
@@ -41,9 +44,9 @@ abstract class BaseViewModel<E: BaseEvent,A: BaseAction,F: BaseEffect,S: BaseVie
 
     private fun start(){
         coroutineManager.runOnBackground(scope){
-            while(isActive){
-                handleEvent(event.receive())
-            }
+            event.receiveAsFlow()
+                .onEach { handleEvent(it) }
+                .launchIn(scope)
         }
     }
 
