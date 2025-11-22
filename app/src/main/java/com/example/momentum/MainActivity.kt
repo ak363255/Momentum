@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.viewmodel.MainViewModel
+import com.example.momentum.presentation.views.SplashView
 import com.example.momentum.ui.theme.MomentumTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,12 +44,13 @@ class MainActivity : ComponentActivity() {
             }
             val mainViewState = mainViewModel.state.collectAsStateWithLifecycle()
             MomentumTheme {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    SplashView(modifier = Modifier)
+                    /*Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Greeting(
                             name = "Android",
                             modifier = Modifier.padding(innerPadding)
                         )
-                    }
+                    }*/
 
 
             }
