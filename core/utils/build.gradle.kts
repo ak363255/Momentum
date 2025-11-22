@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.example.utils"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

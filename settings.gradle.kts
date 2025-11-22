@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Momentum"
 include(":app")
 include(":core:data")
+include(":core:utils")
