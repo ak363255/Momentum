@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.viewmodel.MainViewModel
@@ -33,6 +34,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                true
+            }
+        }
         setContent {
             LaunchedEffect(Unit) {
                 mainViewModel.effect.collect {
@@ -44,13 +50,12 @@ class MainActivity : ComponentActivity() {
             }
             val mainViewState = mainViewModel.state.collectAsStateWithLifecycle()
             MomentumTheme {
-                    SplashView(modifier = Modifier)
-                    /*Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Greeting(
                             name = "Android",
                             modifier = Modifier.padding(innerPadding)
                         )
-                    }*/
+                    }
 
 
             }
