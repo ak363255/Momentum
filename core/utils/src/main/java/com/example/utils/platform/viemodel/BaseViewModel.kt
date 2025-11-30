@@ -46,14 +46,13 @@ abstract class BaseViewModel<E : BaseEvent, A : BaseAction, F : BaseEffect, S : 
     }
 
     private fun start() {
-        coroutineManager.runOnBackground(scope) {
             event.receiveAsFlow()
                 .onEach {
                     Log.d(TAG,"onEach called-> $it")
                     handleEvent(it)
                 }
                 .launchIn(scope)
-        }
+
     }
 
     private suspend fun sendEffect(effect: F) {

@@ -26,24 +26,22 @@ import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.viewmodel.MainViewModel
 import com.example.momentum.presentation.views.SplashView
 import com.example.momentum.ui.theme.MomentumTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     val mainViewModel : MainViewModel by viewModels {
         MainViewModel.MainViewModelFactory()
     }
+    var waitSplash : Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                true
-            }
-        }
         setContent {
             LaunchedEffect(Unit) {
                 mainViewModel.effect.collect {
                     when(it){
                         MainEffect.GoToMainPage -> {
+                            waitSplash = false
                         }
                     }
                 }
