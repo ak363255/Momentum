@@ -14,22 +14,29 @@ import com.example.momentum.presentation.contract.MainViewState
 import com.example.utils.functional.Either
 import com.example.utils.managers.CoroutineManager
 import com.example.utils.platform.viemodel.BaseViewModel
+import com.example.utils.platform.viemodel.work.WorkScope
 import kotlinx.coroutines.flow.flow
 
 class MainViewModel(initialState : MainViewState,coroutineManager: CoroutineManager)
     : BaseViewModel<MainEvent, MainAction, MainEffect, MainViewState>(coroutineManager,initialState) {
 
-        init {
-            sendEvent(MainEvent.LoadSetting)
-        }
-    override suspend fun handleEvent(event: MainEvent) {
+
+
+    init {
+        sendEvent(MainEvent.LoadSetting)
+    }
+
+
+    override suspend fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
+        event: MainEvent
+    ) {
         Log.d(TAG,"handle Event called ->${event}")
-       when(event){
-           MainEvent.LoadSetting -> flow<Either<MainEffect, MainAction>> {
-               emit(Either.Right(MainAction.OnSettingResult))
-               emit(Either.Left(MainEffect.GoToMainPage))
-           }.collectAndHandleFlow()
-       }
+        when(event){
+            MainEvent.LoadSetting -> flow<Either<MainEffect, MainAction>> {
+                emit(Either.Right(MainAction.OnSettingResult))
+                emit(Either.Left(MainEffect.GoToMainPage))
+            }.collectAndHandleFlow()
+        }
     }
 
     override suspend fun reduce(

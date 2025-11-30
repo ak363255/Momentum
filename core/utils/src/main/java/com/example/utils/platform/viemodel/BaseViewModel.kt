@@ -13,6 +13,7 @@ import com.example.utils.platform.viemodel.contract.BaseAction
 import com.example.utils.platform.viemodel.contract.BaseEffect
 import com.example.utils.platform.viemodel.contract.BaseEvent
 import com.example.utils.platform.viemodel.contract.BaseViewState
+import com.example.utils.platform.viemodel.work.WorkScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -40,34 +41,20 @@ abstract class BaseViewModel<E : BaseEvent, A : BaseAction, F : BaseEffect, S : 
         Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
 
     private val scope: CoroutineScope get() = viewModelScope
+    private val workScope = object : WorkScope<S, A, F> {
+        override suspend fun sendAction(action: A) {
+            _state.update {
+                reduce(action, _state.value)
+            }
+        }
 
-    init {
-        start()
-    }
+        override suspend fun sendEffect(effect: F) {
+            this@BaseViewModel.sendEffect(effect)
+        }
 
-    private fun start() {
-            event.receiveAsFlow()
-                .onEach {
-                    Log.d(TAG,"onEach called-> $it")
-                    handleEvent(it)
-                }
-                .launchIn(scope)
-
-    }
-
-    private suspend fun sendEffect(effect: F) {
-        Log.d(TAG,"send effect called -> $effect")
-        _effect.emit(effect)
-    }
-
-    fun sendEvent(event: E) {
-        Log.d(TAG,"send Event called -> ${event}")
-        this.event.trySend(event)
-    }
-
-    suspend fun Flow<Either<F, A>>.collectAndHandleFlow() {
-     collect { either ->
-         Log.d(TAG,"collect and handle called-> ${either}")
+        override suspend fun Flow<Either<F, A>>.collectAndHandleFlow() {
+            collect { either ->
+                Log.d(TAG, "collect and handle called-> ${either}")
                 when (either) {
                     is Either.Left<F> -> sendEffect(either.data)
                     is Either.Right<A> -> _state.update {
@@ -75,10 +62,34 @@ abstract class BaseViewModel<E : BaseEvent, A : BaseAction, F : BaseEffect, S : 
                     }
                 }
             }
+        }
     }
 
+    init {
+        start()
+    }
 
-    abstract suspend fun handleEvent(event: E)
+    private fun start() {
+        event.receiveAsFlow()
+            .onEach {
+                Log.d(TAG, "onEach called-> $it")
+                workScope.handleEvent(it)
+            }
+            .launchIn(scope)
+
+    }
+
+    private suspend fun sendEffect(effect: F) {
+        Log.d(TAG, "send effect called -> $effect")
+        _effect.emit(effect)
+    }
+
+    fun sendEvent(event: E) {
+        Log.d(TAG, "send Event called -> ${event}")
+        this.event.trySend(event)
+    }
+
+    abstract suspend fun WorkScope<S, A, F>.handleEvent(event: E)
     abstract suspend fun reduce(action: A, state: S): S
 
 }
