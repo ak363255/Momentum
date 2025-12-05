@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+
             val mainViewState = mainViewModel.state.collectAsStateWithLifecycle()
             MomentumTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
