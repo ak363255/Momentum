@@ -1,32 +1,24 @@
 package com.example.momentum
 
 import android.os.Bundle
-import android.util.Log
-import android.window.SplashScreenView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.viewmodel.MainViewModel
-import com.example.momentum.presentation.views.SplashView
-import com.example.momentum.ui.theme.MomentumTheme
-import kotlinx.coroutines.delay
+import com.example.ui.theme.MomentumTheme
+import com.example.ui.theme.materials.ColorsUiType
+import com.example.ui.theme.materials.ThemeUiType
+import com.example.ui.theme.tokens.LanguageUiType
 
 class MainActivity : ComponentActivity() {
     val mainViewModel : MainViewModel by viewModels {
@@ -48,7 +40,11 @@ class MainActivity : ComponentActivity() {
             }
 
             val mainViewState = mainViewModel.state.collectAsStateWithLifecycle()
-            MomentumTheme {
+            MomentumTheme(
+                languageUiType = LanguageUiType.ENGLISH,
+                themeUiType = ThemeUiType.LIGHT,
+                colorsUiType = ColorsUiType.RED
+            ) {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Greeting(
                             name = "Android",

@@ -4,7 +4,7 @@
 
 package com.example.ui.theme.tokens
 
-enum class LanguageUiType{
-    HINDI,ENGLISH
+enum class LanguageUiType (val code : String){
+    HINDI("hindi"),
+    ENGLISH("eng")
 }
-

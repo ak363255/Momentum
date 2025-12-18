@@ -4,7 +4,7 @@
 
 package com.example.ui.theme.tokens
 
-class HindiLanguage : CoreStrings {
+object HindiLanguage : CoreStrings {
     override val appName: String
         get() = "मोमेंटम"
 }
