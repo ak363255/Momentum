@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,8 +44,10 @@ android {
 dependencies {
 
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
     implementation(project(":core:utils"))
     implementation(project(":core:ui"))
+    implementation(project(":feature:settings:impl"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,5 +65,26 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+
+    //RoomDependency
+    implementation(libs.androidx.room.runtime)
+
+    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+    // See Add the KSP plugin to your project
+    ksp(libs.androidx.room.compiler)
+
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor(libs.androidx.room.compiler)
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
+
+    // optional - Paging 3 Integration
+    implementation(libs.androidx.room.paging)
 
 }

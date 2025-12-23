@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/feature/settings" />
             <option value="$PROJECT_DIR$/feature/settings/api" />
             <option value="$PROJECT_DIR$/feature/settings/impl" />
+            <option value="$PROJECT_DIR$/module-injector" />
           </set>
         </option>
       </GradleProjectSettings>

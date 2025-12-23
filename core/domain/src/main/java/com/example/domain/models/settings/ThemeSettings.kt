@@ -4,5 +4,8 @@
 
 package com.example.domain.models.settings
 
-class ThemeSettings {
-}
+data class ThemeSettings(
+    val colorsType: ColorsType,
+    val languageType : LanguageType,
+    val themeType : ThemeType
+)

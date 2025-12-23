@@ -5,8 +5,10 @@
 package com.example.momentum.presentation.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.example.domain.models.settings.Setting
+import com.example.impl.mappers.mapToUi
+import com.example.momentum.domain.common.MainFailures
+import com.example.momentum.domain.interactors.SettingInteractor
 import com.example.momentum.presentation.contract.MainAction
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.contract.MainEvent
@@ -15,13 +17,19 @@ import com.example.utils.functional.Either
 import com.example.utils.managers.CoroutineManager
 import com.example.utils.platform.viemodel.BaseViewModel
 import com.example.utils.platform.viemodel.work.WorkScope
-import kotlinx.coroutines.flow.flow
-
-class MainViewModel(initialState : MainViewState,coroutineManager: CoroutineManager)
-    : BaseViewModel<MainEvent, MainAction, MainEffect, MainViewState>(coroutineManager,initialState) {
-
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    coroutineManager: CoroutineManager,
+    private val settingInteractor: SettingInteractor
+) : BaseViewModel<MainEvent, MainAction, MainEffect, MainViewState>(
+    coroutineManager,
+    MainViewState()
+) {
     init {
         sendEvent(MainEvent.LoadSetting)
     }
@@ -30,12 +38,29 @@ class MainViewModel(initialState : MainViewState,coroutineManager: CoroutineMana
     override suspend fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
         event: MainEvent
     ) {
-        Log.d(TAG,"handle Event called ->${event}")
-        when(event){
-            MainEvent.LoadSetting -> flow<Either<MainEffect, MainAction>> {
-                emit(Either.Right(MainAction.OnSettingResult))
-                emit(Either.Left(MainEffect.GoToMainPage))
-            }.collectAndHandleFlow()
+        Log.d(TAG, "handle Event called ->${event}")
+        when (event) {
+            MainEvent.LoadSetting -> {
+                settingInteractor.fetchSettings()
+                    .map<Either<MainFailures, Setting>, Either<MainEffect, MainAction>> {
+                        Log.d(TAG, "RESULT")
+                        when (it) {
+                            is Either.Left<MainFailures> -> {
+                                Log.d(TAG, "Failure")
+                                Either.Left(MainEffect.DoNothing)
+                            }
+
+                            is Either.Right<Setting> -> {
+                                Log.d(TAG, "Success")
+                                Either.Right<MainAction>(MainAction.ChangeSettings(
+                                    languageUiType = it.data.themeSetting.languageType.mapToUi(),
+                                    colorsUiType = it.data.themeSetting.colorsType.mapToUi(),
+                                    themeUiType = it.data.themeSetting.themeType.mapToUi()
+                                ))
+                            }
+                        }
+                    }.collectAndHandleFlow()
+            }
         }
     }
 
@@ -43,14 +68,12 @@ class MainViewModel(initialState : MainViewState,coroutineManager: CoroutineMana
         action: MainAction,
         state: MainViewState
     ): MainViewState {
-        return when(action){
-            MainAction.OnSettingResult -> state.copy()
-        }
-    }
-
-    class MainViewModelFactory : ViewModelProvider.Factory{
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainViewModel(initialState = MainViewState(), coroutineManager = CoroutineManager.Base()) as T
+        return when (action) {
+            is MainAction.ChangeSettings -> state.copy(
+                language = action.languageUiType,
+                color = action.colorsUiType,
+                theme = action.themeUiType
+            )
         }
     }
 }
