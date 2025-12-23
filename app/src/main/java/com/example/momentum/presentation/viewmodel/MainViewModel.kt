@@ -43,15 +43,12 @@ class MainViewModel @Inject constructor(
             MainEvent.LoadSetting -> {
                 settingInteractor.fetchSettings()
                     .map<Either<MainFailures, Setting>, Either<MainEffect, MainAction>> {
-                        Log.d(TAG, "RESULT")
                         when (it) {
                             is Either.Left<MainFailures> -> {
-                                Log.d(TAG, "Failure")
                                 Either.Left(MainEffect.DoNothing)
                             }
 
                             is Either.Right<Setting> -> {
-                                Log.d(TAG, "Success")
                                 Either.Right<MainAction>(MainAction.ChangeSettings(
                                     languageUiType = it.data.themeSetting.languageType.mapToUi(),
                                     colorsUiType = it.data.themeSetting.colorsType.mapToUi(),
