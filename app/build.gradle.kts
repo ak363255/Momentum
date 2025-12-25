@@ -48,6 +48,8 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":core:ui"))
     implementation(project(":feature:settings:impl"))
+    implementation(project(":feature:settings:api"))
+    implementation(project(":module-injector"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -86,5 +88,8 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation(libs.androidx.room.paging)
+
+    //compose navigation
+    implementation(libs.androidx.navigation.compose)
 
 }
