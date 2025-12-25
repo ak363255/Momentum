@@ -12,14 +12,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.viewmodel.MainViewModel
 import com.example.ui.theme.MomentumTheme
 import com.example.ui.theme.tokens.LocalMomentumString
+import com.example.utils.platform.screen.ScreenContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,40 +28,38 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LaunchedEffect(Unit) {
-                mainViewModel.effect.collect {
-                    when (it) {
-                        MainEffect.GoToMainPage -> {
-                            waitSplash = false
-                        }
 
-                        MainEffect.DoNothing -> {}
-                    }
-                }
-            }
-
-            val mainViewState by mainViewModel.state.collectAsStateWithLifecycle()
-            MomentumTheme(
-                languageUiType = mainViewState.language,
-                themeUiType = mainViewState.theme,
-                colorsUiType = mainViewState.color
-            ) {
-                val coreString = LocalMomentumString.current
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize()
-                    ) {
-                        Button(onClick = {}) {
-                            Greeting(
-                                name = "${coreString.appName}",
-                                modifier = Modifier
-                            )
+            ScreenContent(contractProvider = mainViewModel) { mainViewState ->
+                MomentumTheme(
+                    languageUiType = mainViewState.language,
+                    themeUiType = mainViewState.theme,
+                    colorsUiType = mainViewState.color
+                ) {
+                    val coreString = LocalMomentumString.current
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        Box(
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize()
+                        ) {
+                            Button(onClick = {}) {
+                                Greeting(
+                                    name = coreString.appName,
+                                    modifier = Modifier
+                                )
+                            }
                         }
                     }
+                    collectEffect { mainEffect ->
+                        when (mainEffect) {
+                            MainEffect.GoToMainPage -> {
+                                waitSplash = false
+                            }
+
+                            MainEffect.DoNothing -> {}
+                        }
+                    }
                 }
-
-
             }
         }
     }

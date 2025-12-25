@@ -13,64 +13,58 @@ import com.example.momentum.presentation.contract.MainAction
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.contract.MainEvent
 import com.example.momentum.presentation.contract.MainViewState
+import com.example.utils.di.annotations.IoDispatcher
 import com.example.utils.functional.Either
 import com.example.utils.managers.CoroutineManager
 import com.example.utils.platform.viemodel.BaseViewModel
+import com.example.utils.platform.viemodel.work.WorkProcessor
 import com.example.utils.platform.viemodel.work.WorkScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    coroutineManager: CoroutineManager,
-    private val settingInteractor: SettingInteractor
+    private val settingWorkProcessor: SettingsWorkProcessor,
+    private val mainStateCommunicator: MainStateCommunicator,
+    private val mainEffectCommunicator: MainEffectCommunicator,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<MainEvent, MainAction, MainEffect, MainViewState>(
-    coroutineManager,
-    MainViewState()
+    dispatcher = dispatcher,
+    effectCommunicator = mainEffectCommunicator,
+    stateCommunicator = mainStateCommunicator,
+
 ) {
     init {
-        sendEvent(MainEvent.LoadSetting)
+        dispatchEvent(MainEvent.LoadSetting)
     }
 
-
-    override suspend fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
-        event: MainEvent
-    ) {
-        Log.d(TAG, "handle Event called ->${event}")
-        when (event) {
-            MainEvent.LoadSetting -> {
-                settingInteractor.fetchSettings()
-                    .map<Either<MainFailures, Setting>, Either<MainEffect, MainAction>> {
-                        when (it) {
-                            is Either.Left<MainFailures> -> {
-                                Either.Left(MainEffect.DoNothing)
-                            }
-
-                            is Either.Right<Setting> -> {
-                                Either.Right<MainAction>(MainAction.ChangeSettings(
-                                    languageUiType = it.data.themeSetting.languageType.mapToUi(),
-                                    colorsUiType = it.data.themeSetting.colorsType.mapToUi(),
-                                    themeUiType = it.data.themeSetting.themeType.mapToUi()
-                                ))
-                            }
-                        }
-                    }.collectAndHandleFlow()
-            }
-        }
-    }
-
-    override suspend fun reduce(
+    override fun reduce(
         action: MainAction,
-        state: MainViewState
+        currentState: MainViewState
     ): MainViewState {
-        return when (action) {
-            is MainAction.ChangeSettings -> state.copy(
+        return when(action){
+            is MainAction.ChangeSettings -> currentState.copy(
                 language = action.languageUiType,
-                color = action.colorsUiType,
-                theme = action.themeUiType
+                theme = action.themeUiType,
+                color = action.colorsUiType
             )
         }
     }
+
+    override fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
+        event: MainEvent
+    ) {
+        when(event){
+            MainEvent.LoadSetting -> {
+                launchBackgroundWork(scope = scope,dispatcher = dispatcher){
+                    settingWorkProcessor.doWork(SettingsWorksCommand.LoadSettings).collectAndHandleWork()
+                }
+            }
+        }
+
+    }
+
 }

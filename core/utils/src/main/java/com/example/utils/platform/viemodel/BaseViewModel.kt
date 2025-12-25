@@ -9,15 +9,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.utils.functional.Either
 import com.example.utils.managers.CoroutineManager
+import com.example.utils.platform.communications.state.EffectCommunicator
+import com.example.utils.platform.communications.state.StateCommunicator
+import com.example.utils.platform.viemodel.contract.Actor
 import com.example.utils.platform.viemodel.contract.BaseAction
 import com.example.utils.platform.viemodel.contract.BaseEffect
 import com.example.utils.platform.viemodel.contract.BaseEvent
 import com.example.utils.platform.viemodel.contract.BaseViewState
+import com.example.utils.platform.viemodel.contract.ContractProvider
+import com.example.utils.platform.viemodel.contract.Reducer
+import com.example.utils.platform.viemodel.store.getMviStore
 import com.example.utils.platform.viemodel.work.WorkScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -28,68 +36,30 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
 abstract class BaseViewModel<E : BaseEvent, A : BaseAction, F : BaseEffect, S : BaseViewState>(
-    private val coroutineManager: CoroutineManager,
-    private val initialState: S
-) : ViewModel() {
-    val TAG = "VIEWMODEL"
-    private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
-    val state: StateFlow<S> get() = _state
-    private val _effect: MutableSharedFlow<F> = MutableSharedFlow()
-    val effect: SharedFlow<F> get() = _effect
+    private val dispatcher: CoroutineDispatcher,
+    private val effectCommunicator: EffectCommunicator<F>,
+    private val stateCommunicator: StateCommunicator<S>
+) : ViewModel(), ContractProvider<S,E,A,F>, Reducer<S,A>, Actor<S,E,A,F> {
+    val TAG = "BASE-VIEWMODEL"
+     val scope = viewModelScope
+    val store = getMviStore(
+        scope = scope,
+        effectCommunicator = effectCommunicator,
+        stateCommunicator = stateCommunicator,
+        reducer = this,
+        actor = this
+    )
 
-    private val event: Channel<E> =
-        Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
-
-    private val scope: CoroutineScope get() = viewModelScope
-    private val workScope = object : WorkScope<S, A, F> {
-        override suspend fun sendAction(action: A) {
-            _state.update {
-                reduce(action, _state.value)
-            }
-        }
-
-        override suspend fun sendEffect(effect: F) {
-            this@BaseViewModel.sendEffect(effect)
-        }
-
-        override suspend fun Flow<Either<F, A>>.collectAndHandleFlow() {
-            collect { either ->
-                Log.d(TAG, "collect and handle called-> ${either}")
-                when (either) {
-                    is Either.Left<F> -> sendEffect(either.data)
-                    is Either.Right<A> -> _state.update {
-                        reduce(either.data, _state.value)
-                    }
-                }
-            }
-        }
+    override suspend fun collectEffect(collector: FlowCollector<F>) {
+        store.collectEffect(collector)
     }
 
-    init {
-        start()
+    override  fun fetchStateFlow(): StateFlow<S> {
+        return stateCommunicator.fetchStateFlow()
     }
 
-    private fun start() {
-        event.receiveAsFlow()
-            .onEach {
-                Log.d(TAG, "onEach called-> $it")
-                workScope.handleEvent(it)
-            }
-            .launchIn(scope)
-
+    override fun dispatchEvent(event: E) {
+        store.sendEvent(event)
     }
-
-    private suspend fun sendEffect(effect: F) {
-        Log.d(TAG, "send effect called -> $effect")
-        _effect.emit(effect)
-    }
-
-    fun sendEvent(event: E) {
-        Log.d(TAG, "send Event called -> ${event}")
-        this.event.trySend(event)
-    }
-
-    abstract suspend fun WorkScope<S, A, F>.handleEvent(event: E)
-    abstract suspend fun reduce(action: A, state: S): S
 
 }
