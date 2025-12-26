@@ -4,8 +4,10 @@
 
 package com.example.utils.platform.communications
 
+import android.util.Log
 import com.example.utils.platform.viemodel.contract.BaseEffect
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +42,7 @@ interface Communicator<S> {
     ) : Communicator<F> {
         private var flow: MutableSharedFlow<F> =
             MutableSharedFlow(
-                replay = replayCount, extraBufferCapacity = bufferCapacity,
+                replay = 0, extraBufferCapacity = bufferCapacity,
                 onBufferOverflow = onBufferOverflow
             )
 
@@ -49,6 +51,7 @@ interface Communicator<S> {
         }
 
         override fun update(data: F) {
+            Log.d("WORK"," update ${data}")
             flow.tryEmit(data)
         }
 

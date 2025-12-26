@@ -19,5 +19,5 @@ interface StateCommunicator<S: BaseViewState>: Communicator<S> {
 }
 
 interface EffectCommunicator<F: BaseEffect> : Communicator<F>{
-    abstract class Abstract<F: BaseEffect>: EffectCommunicator<F>, Communicator.AbstractSharedFlow<F>()
+    abstract class Abstract<F: BaseEffect>: EffectCommunicator<F>, Communicator.AbstractSharedFlow<F>(bufferCapacity = 1)
 }

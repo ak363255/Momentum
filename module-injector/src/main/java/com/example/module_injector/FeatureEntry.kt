@@ -8,13 +8,14 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import com.example.module_injector.navigation.Navigable
 
 
 typealias Destinations = Map<Class<out FeatureEntry>, FeatureEntry>
 
 interface FeatureEntry{
 
-    val featureRoute : String
+    val featureRoute : Navigable
 
     val arguments : List<NamedNavArgument>
         get() = emptyList()

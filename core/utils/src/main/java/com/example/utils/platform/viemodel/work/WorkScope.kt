@@ -66,7 +66,6 @@ interface WorkScope<S,A,F> : WorkResultHandler<A,F>{
                 is Either.Left<A> -> sendAction(this.data)
                 is Either.Right<F> -> sendEffect(this.data)
             }
-
         }
 
         override suspend fun Flow<Either<A, F>>.collectAndHandleWork() {

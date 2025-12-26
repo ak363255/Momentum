@@ -7,10 +7,12 @@ package com.example.api.navigation
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavDeepLink
 import com.example.module_injector.AggregateFeatureEntry
+import com.example.module_injector.navigation.NavGraph
+import com.example.module_injector.navigation.Navigable
 
 abstract class SettingFeatureEntry : AggregateFeatureEntry{
-    override val featureRoute: String
-        get() = "setting-feature"
+    override val featureRoute: Navigable
+        get() = NavGraph.Settings
 
     override val arguments: List<NamedNavArgument>
         get() = super.arguments
