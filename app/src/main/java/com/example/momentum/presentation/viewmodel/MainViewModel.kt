@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
+    override suspend fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
         event: MainEvent
     ) {
         when(event){

@@ -12,8 +12,10 @@ import com.example.ui.theme.materials.ThemeUiType
 import com.example.ui.theme.materials.toColorScheme
 import com.example.ui.theme.tokens.LanguageUiType
 import com.example.ui.theme.tokens.LocalMomentumColors
+import com.example.ui.theme.tokens.LocalMomentumIcons
 import com.example.ui.theme.tokens.LocalMomentumLanguage
 import com.example.ui.theme.tokens.LocalMomentumString
+import com.example.ui.theme.tokens.fetchCoreIcons
 import com.example.ui.theme.tokens.fetchCoreStrings
 import com.example.ui.theme.tokens.fetchLanguage
 import com.example.ui.theme.tokens.fetchMomentumColorsType
@@ -28,6 +30,7 @@ fun MomentumTheme(
     val appLanguage = fetchLanguage(languageUiType)
     val coreStrings = fetchCoreStrings(appLanguage)
     val appColors = fetchMomentumColorsType(themeUiType,colorsUiType)
+    val appIcons = fetchCoreIcons()
     MaterialTheme(
         colorScheme = themeUiType.toColorScheme(colorsUiType),
         content = {
@@ -35,6 +38,7 @@ fun MomentumTheme(
                 LocalMomentumLanguage provides appLanguage,
                 LocalMomentumColors provides appColors,
                 LocalMomentumString provides coreStrings,
+                LocalMomentumIcons provides appIcons,
                 content = content
             )
         }

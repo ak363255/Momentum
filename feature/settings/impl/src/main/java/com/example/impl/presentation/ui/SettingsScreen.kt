@@ -15,7 +15,7 @@ import com.example.module_injector.navigation.NavigableRoutes
 import com.example.module_injector.navigation.OnNavigateTo
 
 internal fun NavGraphBuilder.settingsScreen(onNavigateTo: OnNavigateTo) {
-    navigation<com.example.module_injector.navigation.NavGraph.Settings>(startDestination = SettingsNavigableRoutes.SettingsMainPage) {
+    navigation<NavigableRoutes.SettingsPage>(startDestination = SettingsNavigableRoutes.SettingsMainPage) {
         composable<SettingsNavigableRoutes.SettingsMainPage>(
         ) {
             SettingsMainPage(onNavigateTo)

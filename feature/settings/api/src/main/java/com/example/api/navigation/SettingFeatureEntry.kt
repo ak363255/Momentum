@@ -9,10 +9,11 @@ import androidx.navigation.NavDeepLink
 import com.example.module_injector.AggregateFeatureEntry
 import com.example.module_injector.navigation.NavGraph
 import com.example.module_injector.navigation.Navigable
+import com.example.module_injector.navigation.NavigableRoutes
 
 abstract class SettingFeatureEntry : AggregateFeatureEntry{
     override val featureRoute: Navigable
-        get() = NavGraph.Settings
+        get() = NavigableRoutes.SettingsPage
 
     override val arguments: List<NamedNavArgument>
         get() = super.arguments

@@ -4,6 +4,8 @@
 
 package com.example.momentum.di.modules
 
+import com.example.momentum.presentation.ui.tabs.viewmodel.TabEffectCommunicator
+import com.example.momentum.presentation.ui.tabs.viewmodel.TabStateCommunicator
 import com.example.momentum.presentation.viewmodel.MainEffectCommunicator
 import com.example.momentum.presentation.viewmodel.MainStateCommunicator
 import com.example.momentum.presentation.viewmodel.SettingsWorkProcessor
@@ -26,6 +28,14 @@ interface PresentationModule {
     @Binds
     @Singleton
     fun bindsMainStateCommunicator(mainEffectCommunicator: MainStateCommunicator.Base): MainStateCommunicator
+
+    @Binds
+    @Singleton
+    fun bindsTabEffectCommunicator(tabEffectCommunicator: TabEffectCommunicator.Base): TabEffectCommunicator
+
+    @Binds
+    @Singleton
+    fun bindsTabStateCommunicator(tabStateCommunicator: TabStateCommunicator.Base): TabStateCommunicator
 
     @Binds
     @Singleton

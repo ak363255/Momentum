@@ -7,9 +7,11 @@ package com.example.ui.theme
 import androidx.compose.runtime.Composable
 import com.example.ui.theme.tokens.CoreStrings
 import com.example.ui.theme.tokens.LocalMomentumColors
+import com.example.ui.theme.tokens.LocalMomentumIcons
 import com.example.ui.theme.tokens.LocalMomentumLanguage
 import com.example.ui.theme.tokens.LocalMomentumString
 import com.example.ui.theme.tokens.MomentumColors
+import com.example.ui.theme.tokens.MomentumIcons
 import com.example.ui.theme.tokens.MomentumLanguage
 
 object MomentumRes{
@@ -26,5 +28,10 @@ object MomentumRes{
     @Composable
     fun fetchAppColors(): MomentumColors{
         return LocalMomentumColors.current
+    }
+
+    @Composable
+    fun fetchAppIcons(): MomentumIcons{
+        return LocalMomentumIcons.current
     }
 }
