@@ -13,4 +13,15 @@ object HindiLanguage : CoreStrings {
         get() = "एनालिटिक्स"
     override val SettingsTitle: String
         get() = "सेटिंग"
+    override val mainDrawerTitle: String
+        get() = "मुख्य"
+
+    override val overViewDrawerTitle: String
+        get() = "सारांश"
+
+    override val categoriesDrawerTitle: String
+        get() = "श्रेणियाँ"
+
+    override val templateDrawerTitle: String
+        get() = "टेम्पलेट"
 }

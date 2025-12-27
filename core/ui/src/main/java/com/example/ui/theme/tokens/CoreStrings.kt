@@ -9,4 +9,8 @@ interface CoreStrings {
     val homeTitle : String
     val AnalyticsTitle : String
     val SettingsTitle : String
+    val mainDrawerTitle : String
+    val overViewDrawerTitle : String
+    val categoriesDrawerTitle : String
+    val templateDrawerTitle : String
 }

@@ -15,4 +15,12 @@ object EnglishLanguage : CoreStrings{
 
     override val SettingsTitle: String
         get() = "Setting"
+    override val mainDrawerTitle: String
+        get() = "Main"
+    override val overViewDrawerTitle: String
+        get() = "Overview"
+    override val categoriesDrawerTitle: String
+        get() = "Categories"
+    override val templateDrawerTitle: String
+        get() = "Template"
 }
