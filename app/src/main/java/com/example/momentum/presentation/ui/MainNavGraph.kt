@@ -13,14 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.module_injector.navigation.NavigableRoutes
 import com.example.momentum.di.modules.GlobalNavigationProvider
-import com.example.ui.theme.MomentumRes
 import com.example.utils.managers.LocalDrawerManager
 import kotlinx.coroutines.launch
 

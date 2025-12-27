@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.module_injector.navigation.NavigableRoutes
+import com.example.module_injector.navigation.smartNavigateTo
 import com.example.momentum.di.modules.GlobalNavigationProvider
 import com.example.momentum.presentation.ui.MainNavGraph
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEffect
@@ -75,10 +76,14 @@ fun TabScreen(modifier: Modifier = Modifier, globalNavigationProvider: GlobalNav
         )
         collectEffect { effect ->
             when (effect) {
-                TabScreenEffect.ShowAnalyticsFeature -> navController.navigate(NavigableRoutes.AnalyticsPage)
+                TabScreenEffect.ShowAnalyticsFeature -> {
+                    navController.smartNavigateTo(NavigableRoutes.AnalyticsPage, launchSingleTop = true)
+                }
                 TabScreenEffect.ShowCategoriesFeature -> navController.navigate(NavigableRoutes.CategoriesPage)
                 TabScreenEffect.ShowHomeFeature -> navController.navigate(NavigableRoutes.MainPage)
-                TabScreenEffect.ShowOverviewFeature -> navController.navigate(NavigableRoutes.OverviewPage)
+                TabScreenEffect.ShowOverviewFeature -> {
+                    navController.smartNavigateTo(NavigableRoutes.OverviewPage, launchSingleTop = true)
+                }
                 TabScreenEffect.ShowSettingsFeature -> navController.navigate(NavigableRoutes.SettingsPage)
                 TabScreenEffect.ShowTemplateFeature -> navController.navigate(NavigableRoutes.TemplatePage)
             }
