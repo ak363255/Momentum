@@ -29,7 +29,7 @@ fun TabScreen(modifier: Modifier = Modifier, globalNavigationProvider: GlobalNav
     val tabScreenViewModel: TabScreenViewModel = viewModel()
     ScreenContent(contractProvider = tabScreenViewModel) { state ->
         val navController = rememberNavController()
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val drawerManager = rememberDrawerManager(drawerState)
         HomeNavigationDrawer(
             drawerState = drawerState,

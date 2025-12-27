@@ -31,28 +31,11 @@ fun MainNavGraph(
         navController = navController,
         startDestination = NavigableRoutes.MainPage
     ) {
-        composable<NavigableRoutes.MainPage> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.Green)
-            ) {
-                val scope = rememberCoroutineScope()
-                val drawerManager = LocalDrawerManager.current
-                Column {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(28.dp)
-                            .clickable {
-                                scope.launch {
-                                    drawerManager.openDrawer()
-                                }
-                            })
-                }
-            }
+
+        with(globalNavigationProvider.provideHomeFeatureEntry()) {
+            navigate(navController)
         }
+
         with(globalNavigationProvider.provideSettingFeature()) {
             navigate(navController)
         }
@@ -80,7 +63,7 @@ fun MainNavGraph(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = Color.Gray)
-            ){
+            ) {
                 val scope = rememberCoroutineScope()
                 val drawerManager = LocalDrawerManager.current
                 Column {

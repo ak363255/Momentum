@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
@@ -8,17 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.momentum"
+    namespace = "com.example.api"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.momentum"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,26 +35,11 @@ android {
         compilerOptions {
             // We parse the string from your libs.versions to the required JvmTarget type
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
+        }    }
 }
 
 dependencies {
-
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:utils"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:settings:impl"))
-    implementation(project(":feature:settings:api"))
-
-    implementation(project(":feature:Home:impl"))
-    implementation(project(":feature:Home:api"))
     implementation(project(":module-injector"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -100,6 +82,4 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.kotlinx.serialization.json)
-
-
 }

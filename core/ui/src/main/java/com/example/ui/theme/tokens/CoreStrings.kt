@@ -6,6 +6,8 @@ package com.example.ui.theme.tokens
 
 interface CoreStrings {
     val appName : String
+
+    val topBarTitle : String
     val homeTitle : String
     val AnalyticsTitle : String
     val SettingsTitle : String
@@ -13,4 +15,7 @@ interface CoreStrings {
     val overViewDrawerTitle : String
     val categoriesDrawerTitle : String
     val templateDrawerTitle : String
+
+    val confirmTitle : String
+    val cancelTitle : String
 }

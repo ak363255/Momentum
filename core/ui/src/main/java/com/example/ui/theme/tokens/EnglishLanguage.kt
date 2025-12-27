@@ -7,6 +7,8 @@ package com.example.ui.theme.tokens
 object EnglishLanguage : CoreStrings{
     override val appName: String
         get() = "Momentum"
+    override val topBarTitle: String
+        get() = "Schedule"
     override val homeTitle: String
         get() = "Home"
 
@@ -23,4 +25,8 @@ object EnglishLanguage : CoreStrings{
         get() = "Categories"
     override val templateDrawerTitle: String
         get() = "Template"
+    override val confirmTitle: String
+        get() = "Select"
+    override val cancelTitle: String
+        get() = "Cancel"
 }

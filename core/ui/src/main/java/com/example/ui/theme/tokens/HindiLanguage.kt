@@ -24,4 +24,13 @@ object HindiLanguage : CoreStrings {
 
     override val templateDrawerTitle: String
         get() = "टेम्पलेट"
+
+    override val topBarTitle: String
+        get() = "शेड्यूल"
+
+    override val confirmTitle: String
+        get() = "चुनें"
+
+    override val cancelTitle: String
+        get() = "रद्द"
 }
