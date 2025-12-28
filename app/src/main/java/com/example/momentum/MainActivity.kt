@@ -8,9 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.momentum.di.modules.TabNavigatorProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.momentum.di.modules.TabFeatureProvider
 import com.example.momentum.presentation.contract.MainEffect
-import com.example.momentum.presentation.ui.tabs.views.TabScreen
+import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
+import com.example.momentum.presentation.ui.tabs.views.MainScreen
 import com.example.momentum.presentation.viewmodel.MainViewModel
 import com.example.ui.theme.MomentumTheme
 import com.example.utils.platform.screen.ScreenContent
@@ -21,7 +23,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var tabNavigatorProvider: TabNavigatorProvider
+    lateinit var tabFeatureProvider: TabFeatureProvider
+
+    val tabScreenViewModel : TabScreenViewModel by viewModels()
     val mainViewModel: MainViewModel by viewModels()
     var waitSplash: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     themeUiType = mainViewState.theme,
                     colorsUiType = mainViewState.color
                 ) {
-                    TabScreen(modifier = Modifier,tabNavigatorProvider)
+                    MainScreen(tabFeatureProvider = tabFeatureProvider)
                     collectEffect { mainEffect ->
                         when (mainEffect) {
                             MainEffect.GoToMainPage -> {

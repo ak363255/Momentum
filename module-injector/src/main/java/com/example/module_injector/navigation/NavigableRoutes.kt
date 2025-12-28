@@ -28,5 +28,8 @@ sealed class NavigableRoutes : Navigable {
     @Serializable
     data object TabScreen : NavigableRoutes()
 
+    @Serializable
+    data object Root : NavigableRoutes()
+
 
 }

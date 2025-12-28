@@ -6,11 +6,11 @@ import com.example.impl.HomeFeatureEntryImpl
 import com.example.impl.SettingFeatureEntryImpl
 import javax.inject.Inject
 
-interface TabNavigatorProvider {
+interface TabFeatureProvider {
     fun provideSettingFeature(): SettingFeatureEntry
     fun provideHomeFeatureEntry(): HomeFeatureEntry
 
-    class Base @Inject constructor(): TabNavigatorProvider{
+    class Base @Inject constructor(): TabFeatureProvider{
         override fun provideSettingFeature(): SettingFeatureEntry {
             return SettingFeatureEntryImpl()
         }
