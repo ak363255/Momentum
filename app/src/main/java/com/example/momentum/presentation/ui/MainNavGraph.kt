@@ -18,7 +18,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.module_injector.navigation.NavigableRoutes
-import com.example.module_injector.navigation.OnNavigateTo
 import com.example.momentum.di.modules.TabFeatureProvider
 import com.example.utils.managers.LocalDrawerManager
 import kotlinx.coroutines.launch
