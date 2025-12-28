@@ -12,5 +12,5 @@ interface NavigationModule {
 
     @Binds
     @Singleton
-    fun bindsGlobalNavigationModule(globalNavigationProvider: GlobalNavigationProvider.Base): GlobalNavigationProvider
+    fun bindsGlobalNavigationModule(globalNavigationProvider: TabNavigatorProvider.Base): TabNavigatorProvider
 }

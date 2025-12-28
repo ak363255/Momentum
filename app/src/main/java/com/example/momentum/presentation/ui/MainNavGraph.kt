@@ -18,13 +18,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.module_injector.navigation.NavigableRoutes
-import com.example.momentum.di.modules.GlobalNavigationProvider
+import com.example.momentum.di.modules.TabNavigatorProvider
 import com.example.utils.managers.LocalDrawerManager
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainNavGraph(
-    globalNavigationProvider: GlobalNavigationProvider,
+    tabNavigatorProvider: TabNavigatorProvider,
     navController: NavHostController
 ) {
     NavHost(
@@ -32,11 +32,11 @@ fun MainNavGraph(
         startDestination = NavigableRoutes.MainPage
     ) {
 
-        with(globalNavigationProvider.provideHomeFeatureEntry()) {
+        with(tabNavigatorProvider.provideHomeFeatureEntry()) {
             navigate(navController)
         }
 
-        with(globalNavigationProvider.provideSettingFeature()) {
+        with(tabNavigatorProvider.provideSettingFeature()) {
             navigate(navController)
         }
 

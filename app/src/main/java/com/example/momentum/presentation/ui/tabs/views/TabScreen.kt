@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.module_injector.navigation.NavigableRoutes
 import com.example.module_injector.navigation.smartNavigateTo
-import com.example.momentum.di.modules.GlobalNavigationProvider
+import com.example.momentum.di.modules.TabNavigatorProvider
 import com.example.momentum.presentation.ui.MainNavGraph
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEffect
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEvent
@@ -25,7 +25,7 @@ import com.example.utils.managers.rememberDrawerManager
 import com.example.utils.platform.screen.ScreenContent
 
 @Composable
-fun TabScreen(modifier: Modifier = Modifier, globalNavigationProvider: GlobalNavigationProvider) {
+fun TabScreen(modifier: Modifier = Modifier, tabNavigatorProvider: TabNavigatorProvider) {
     val tabScreenViewModel: TabScreenViewModel = viewModel()
     ScreenContent(contractProvider = tabScreenViewModel) { state ->
         val navController = rememberNavController()
@@ -69,7 +69,7 @@ fun TabScreen(modifier: Modifier = Modifier, globalNavigationProvider: GlobalNav
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        MainNavGraph(globalNavigationProvider, navController)
+                        MainNavGraph(tabNavigatorProvider, navController)
                     }
                 }
             }

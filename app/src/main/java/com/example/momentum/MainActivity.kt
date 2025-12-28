@@ -6,17 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.momentum.di.modules.GlobalNavigationProvider
+import com.example.momentum.di.modules.TabNavigatorProvider
 import com.example.momentum.presentation.contract.MainEffect
-import com.example.momentum.presentation.ui.MainNavGraph
 import com.example.momentum.presentation.ui.tabs.views.TabScreen
 import com.example.momentum.presentation.viewmodel.MainViewModel
 import com.example.ui.theme.MomentumTheme
@@ -28,7 +21,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var globalNavigationProvider: GlobalNavigationProvider
+    lateinit var tabNavigatorProvider: TabNavigatorProvider
     val mainViewModel: MainViewModel by viewModels()
     var waitSplash: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     themeUiType = mainViewState.theme,
                     colorsUiType = mainViewState.color
                 ) {
-                    TabScreen(modifier = Modifier,globalNavigationProvider)
+                    TabScreen(modifier = Modifier,tabNavigatorProvider)
                     collectEffect { mainEffect ->
                         when (mainEffect) {
                             MainEffect.GoToMainPage -> {
