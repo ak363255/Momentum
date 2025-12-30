@@ -55,7 +55,7 @@ internal fun HomeScreen(onNavigateTo: OnNavigateTo) {
             onDismiss = {
                 showDateDialog.value = false
             },
-            onDateSelected = {date ->
+            onDateSelected = { date ->
                 showDateDialog.value = false
             },
             showDatePickerDialog = showDateDialog.value,
