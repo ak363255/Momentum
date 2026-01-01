@@ -5,9 +5,11 @@
 package com.example.data.models.schedules
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity("dailySchedules")
 data class DailyScheduleEntity(
+    @PrimaryKey
     val date : Long
 )

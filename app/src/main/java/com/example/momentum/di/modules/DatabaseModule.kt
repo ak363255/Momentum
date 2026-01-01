@@ -1,7 +1,9 @@
 package com.example.momentum.di.modules
 
 import android.content.Context
-import androidx.room.Room
+import com.example.data.datasources.schedule.ScheduleDao
+import com.example.data.datasources.schedule.ScheduleDatabase
+import com.example.data.datasources.schedule.ScheduleDatabaseCallback
 import com.example.data.datasources.setting.SettingsDataBase
 import com.example.data.datasources.setting.SettingsDataBaseCallback
 import com.example.data.datasources.setting.ThemeLocalDataSource
@@ -36,4 +38,14 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideThemeLocalDataSource(themeLocalDataSource: ThemeLocalDataSource.Base): ThemeLocalDataSource = themeLocalDataSource
+
+
+    @Singleton
+    @Provides
+    fun provideScheduleDatabase(@ApplicationContext context : Context,scheduleDatabaseCallback: ScheduleDatabaseCallback): ScheduleDatabase = ScheduleDatabase.create(context,scheduleDatabaseCallback)
+
+
+    @Singleton
+    @Provides
+    fun provideScheduleDao(scheduleDatabase : ScheduleDatabase): ScheduleDao = scheduleDatabase.getScheduleDao()
 }
