@@ -41,8 +41,12 @@ data class TimeTaskEntity(
     val fifteenMinBeforeNotify : Boolean = false,
     @ColumnInfo("oneHourBeforeNotify")
     val oneHourBeforeNotify : Boolean = false,
-    @ColumnInfo("twoHourBeforeNotify")
-    val twoHourBeforeNotify : Boolean = false,
+    @ColumnInfo("threeHourBeforeNotify")
+    val threeHourBeforeNotify : Boolean = false,
+    @ColumnInfo("oneWeekBeforeNotify")
+    val oneWeekBeforeNotify : Boolean = false,
+    @ColumnInfo("oneDayBeforeNotify")
+    val oneDayBeforeNotify : Boolean = false,
     @ColumnInfo("dayBeforeNotify")
     val dayBeforeNotify: Boolean = false
 

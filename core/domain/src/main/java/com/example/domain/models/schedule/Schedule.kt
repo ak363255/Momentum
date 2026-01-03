@@ -7,7 +7,7 @@ package com.example.domain.models.schedule
 import java.util.Date
 
 data class Schedule(
-    val date : Date,
+    val date : Long,
     val timeTask : List<TimeTask>,
     val status : DailScheduleStatus,
 

@@ -10,11 +10,11 @@ import com.example.utils.functional.TimeRange
 import java.util.Date
 
 data class TimeTask(
-    val key : Date,
+    val key : Long,
     val date : Date,
     val createdAt : Date,
     val mainCategory : MainCategory,
-    val subCategory : SubCategory,
+    val subCategory : SubCategory?,
     val isEnableNotification : Boolean,
     val notificationTasks : TimeTaskNotification,
     val isConsiderInStatistics : Boolean,
