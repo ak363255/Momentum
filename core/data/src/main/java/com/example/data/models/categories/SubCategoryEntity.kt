@@ -22,6 +22,7 @@ import androidx.room.PrimaryKey
 )
 data class SubCategoryEntity(
      @PrimaryKey(autoGenerate = true)
+     @ColumnInfo("id")
     val id : Int,
     @ColumnInfo("subCategoryName")
     val subCategoryName : String,

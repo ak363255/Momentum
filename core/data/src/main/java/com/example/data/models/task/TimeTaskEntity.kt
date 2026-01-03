@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 @Entity("timeTasks")
 data class TimeTaskEntity(
     @PrimaryKey(autoGenerate = false)
+    @ColumnInfo("key")
     val key : Long,
     @ColumnInfo("dailyScheduleDate", index = true)
     val dailyScheduleDate : Long,

@@ -19,5 +19,6 @@ enum class DefaultCategoryType {
     MISC,
     SPORT,
     OTHER,
-    HYGIENE
+    HYGIENE,
+    EMPTY
 }

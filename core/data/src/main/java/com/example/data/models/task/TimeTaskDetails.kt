@@ -7,6 +7,7 @@ package com.example.data.models.task
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.data.models.categories.MainCategoryDetails
+import com.example.data.models.categories.MainCategoryEntity
 import com.example.data.models.categories.SubCategoryEntity
 
 data class TimeTaskDetails(
@@ -15,16 +16,17 @@ data class TimeTaskDetails(
 
     @Relation(
         parentColumn = "mainCategoryId",
-        entityColumn = "id"
+        entityColumn = "id",
+         entity  = MainCategoryEntity::class
     )
     val mainCategory : MainCategoryDetails,
+
+
 
     @Relation(
         parentColumn = "subCategoryId",
         entityColumn = "id"
     )
-    val subCategory : SubCategoryEntity
-
-
+    val subCategory : SubCategoryEntity?
 
 )
