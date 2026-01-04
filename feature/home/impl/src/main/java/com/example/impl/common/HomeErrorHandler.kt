@@ -9,7 +9,7 @@ import com.example.utils.functional.TimeShiftException
 import com.example.utils.handlers.ErrorHandler
 import javax.inject.Inject
 
-class HomeErrorHandler @Inject constructor(): ErrorHandler<HomeFailures> {
+internal class HomeErrorHandler @Inject constructor(): ErrorHandler<HomeFailures> {
     override suspend fun handle(error: Throwable): HomeFailures {
         return if (error is TimeShiftException) HomeFailures.ShiftError
         else if (error is TimeTaskImportanceException) HomeFailures.ImportanceError

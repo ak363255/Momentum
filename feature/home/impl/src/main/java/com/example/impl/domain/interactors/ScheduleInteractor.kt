@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
-interface ScheduleInteractor {
+internal interface ScheduleInteractor {
 
     fun fetchScheduleByDate(date: Long): Flow<Either<HomeFailures, Schedule?>>
     suspend fun createSchedule(requireDate: Date): Either<HomeFailures, Unit>
@@ -25,7 +25,7 @@ interface ScheduleInteractor {
     suspend fun fetchFeatureScheduleDate(): Date?
     suspend fun setFeatureScheduleDate(date: Date)
 
-    class Base @Inject constructor(
+     class Base @Inject constructor(
         private val scheduleRepository: ScheduleRepository,
         private val dateManager: DateManager,
         private val statusChecker: ScheduleStatusChecker,

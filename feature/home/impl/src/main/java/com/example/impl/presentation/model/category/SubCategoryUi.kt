@@ -4,7 +4,7 @@
 
 package com.example.impl.presentation.model.category
 
-data class SubCategoryUi(
+internal data class SubCategoryUi(
     val id : Int,
     val mainCategory : MainCategoryUi = MainCategoryUi(),
     val subCategoryName : String?,

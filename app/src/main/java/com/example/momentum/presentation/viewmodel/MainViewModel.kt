@@ -4,24 +4,15 @@
 
 package com.example.momentum.presentation.viewmodel
 
-import android.util.Log
-import com.example.domain.models.settings.Setting
-import com.example.impl.mappers.mapToUi
-import com.example.momentum.domain.common.MainFailures
-import com.example.momentum.domain.interactors.SettingInteractor
 import com.example.momentum.presentation.contract.MainAction
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.contract.MainEvent
 import com.example.momentum.presentation.contract.MainViewState
 import com.example.utils.di.annotations.IoDispatcher
-import com.example.utils.functional.Either
-import com.example.utils.managers.CoroutineManager
 import com.example.utils.platform.viemodel.BaseViewModel
-import com.example.utils.platform.viemodel.work.WorkProcessor
 import com.example.utils.platform.viemodel.work.WorkScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 

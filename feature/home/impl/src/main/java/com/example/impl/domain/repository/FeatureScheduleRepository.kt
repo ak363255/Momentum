@@ -6,7 +6,7 @@ package com.example.impl.domain.repository
 
 import java.util.Date
 
-interface  FeatureScheduleRepository {
+internal interface  FeatureScheduleRepository {
     suspend fun fetchFeatureScheduleDate() : Date?
     suspend fun setFeatureScheduleDate(date : Date)
 }

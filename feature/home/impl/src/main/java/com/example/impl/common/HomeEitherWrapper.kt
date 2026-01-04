@@ -8,7 +8,7 @@ import com.example.impl.domain.model.HomeFailures
 import com.example.utils.wrappers.FlowEitherWrapper
 import javax.inject.Inject
 
-interface HomeEitherWrapper :
+internal interface HomeEitherWrapper :
     FlowEitherWrapper<HomeFailures> {
 
     class Base @Inject constructor(

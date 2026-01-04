@@ -9,7 +9,6 @@ import com.example.api.navigation.HomeFeatureEntry
 import com.example.impl.presentation.views.home
 
 class HomeFeatureEntryImpl :  HomeFeatureEntry(){
-
     override fun NavGraphBuilder.navigate(navHostController: NavHostController) {
            home(navHostController)
     }

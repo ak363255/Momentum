@@ -20,7 +20,7 @@ import com.example.ui.views.TopAppBarTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(
+internal fun HomeTopBar(
     modifier: Modifier = Modifier,
     onMenuButtonClicked: () -> Unit,
     onOverviewButtonClicked: () -> Unit,

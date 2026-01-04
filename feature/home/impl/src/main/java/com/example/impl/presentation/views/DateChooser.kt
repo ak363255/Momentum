@@ -22,7 +22,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeDatePicker(
+internal fun HomeDatePicker(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onDateSelected: (Date) -> Unit,

@@ -41,7 +41,7 @@ internal sealed class HomeAction : BaseAction {
 
 }
 
-sealed class HomeEffect : BaseEffect {
+internal sealed class HomeEffect : BaseEffect {
     data class ShowError(val homeFailures: HomeFailures) : HomeEffect()
 
 }

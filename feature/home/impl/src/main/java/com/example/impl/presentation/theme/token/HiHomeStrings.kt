@@ -4,7 +4,7 @@
 
 package com.example.impl.presentation.theme.token
 
-object HiHomeStrings : HomeCoreStrings {
+internal object HiHomeStrings : HomeCoreStrings {
     override val topAppbarHomeTitle: String = "अनुसूची"
     override val topAppbarCategoriesTitle: String = "श्रेणियाँ"
     override val topAppbarOverviewTitle: String = "सारांश"

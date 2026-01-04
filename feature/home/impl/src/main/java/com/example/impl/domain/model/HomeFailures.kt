@@ -6,7 +6,7 @@ package com.example.impl.domain.model
 
 import com.example.utils.functional.DomainFailures
 
-sealed class HomeFailures  : DomainFailures{
+internal sealed class HomeFailures  : DomainFailures{
     data object ShiftError: HomeFailures()
     data object ImportanceError : HomeFailures()
     data class OtherError(val error: Error) : HomeFailures()

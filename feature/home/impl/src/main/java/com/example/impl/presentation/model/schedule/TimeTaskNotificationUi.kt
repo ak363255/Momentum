@@ -4,7 +4,7 @@
 
 package com.example.impl.presentation.model.schedule
 
-data class TimeTaskNotificationUi(
+internal data class TimeTaskNotificationUi(
     val fifteenMinutesBeforeNotify: Boolean = false,
     val oneHourBeforeNotify: Boolean = false,
     val threeHourBeforeNotify: Boolean = false,

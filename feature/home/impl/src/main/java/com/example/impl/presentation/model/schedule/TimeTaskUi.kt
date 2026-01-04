@@ -31,5 +31,5 @@ internal data class TimeTaskUi(
     val subCategory: SubCategoryUi?,
     val timeTaskNotification: TimeTaskNotificationUi,
     ){
-    fun timeToRange() = TimeRange(startTime, endTime)
+     fun timeToRange() = TimeRange(startTime, endTime)
 }

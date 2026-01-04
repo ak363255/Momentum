@@ -4,4 +4,4 @@
 
 package com.example.impl.common
 
-class TimeTaskImportanceException : Throwable()
+internal class TimeTaskImportanceException : Throwable()
