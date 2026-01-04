@@ -21,7 +21,7 @@ interface ScheduleLocalDataSource {
 
     suspend fun addTimeTasks(timeTasks: List<TimeTaskEntity>)
 
-    fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails>
+    fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails?>
 
     fun fetchScheduleByRange(range: TimeRange?): Flow<List<ScheduleDetails>>
 
@@ -47,7 +47,7 @@ interface ScheduleLocalDataSource {
             scheduleDao.addTimeTasks(timeTasks)
         }
 
-        override fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails> {
+        override fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails?> {
             return scheduleDao.fetchScheduleByDate(date)
         }
 

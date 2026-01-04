@@ -20,7 +20,7 @@ interface ScheduleDao {
      fun fetchAllSchedules(): Flow<List<ScheduleDetails>>
 
     @Query("SELECT * FROM dailySchedules WHERE date = :date")
-    fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails>
+    fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails?>
 
     @Query("SELECT * FROM dailySchedules WHERE date >= :from AND date <= :to")
     fun fetchScheduleByDateRange(from: Long, to: Long): Flow<List<ScheduleDetails>>

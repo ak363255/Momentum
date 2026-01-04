@@ -33,3 +33,5 @@ interface ScheduleToDomainMapper : Mapper<ScheduleDetails, Schedule> {
 
     }
 }
+
+fun ScheduleDetails.map(scheduleToDomainMapper: ScheduleToDomainMapper) = scheduleToDomainMapper.map(this)

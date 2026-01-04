@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-interface SettingsWorkProcessor : FlowWorkProcessor<SettingsWorksCommand, MainAction, MainEffect> {
+ interface SettingsWorkProcessor : FlowWorkProcessor<SettingsWorksCommand, MainAction, MainEffect> {
 
-    class Base @Inject constructor(
+      class Base @Inject constructor(
         private val settingInteractor: SettingInteractor
     ) : SettingsWorkProcessor {
         @OptIn(ExperimentalCoroutinesApi::class)

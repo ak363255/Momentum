@@ -6,6 +6,7 @@ package com.example.data.repository.schedule
 
 import com.example.data.datasources.schedule.ScheduleLocalDataSource
 import com.example.data.mappers.schedule.ScheduleToDomainMapper
+import com.example.data.mappers.schedule.map
 import com.example.data.mappers.schedule.mapToData
 import com.example.data.models.task.TimeTaskEntity
 import com.example.domain.models.schedule.Schedule
@@ -38,9 +39,9 @@ class ScheduleRepositoryImpl(
         }
     }
 
-    override fun fetchScheduleByDate(date: Long): Flow<Schedule> {
+    override fun fetchScheduleByDate(date: Long): Flow<Schedule?> {
         return scheduleLocalDataSource.fetchScheduleByDate(date).map {
-            scheduleToDomainMapper.map(it)
+            it?.map(scheduleToDomainMapper)
         }
     }
 

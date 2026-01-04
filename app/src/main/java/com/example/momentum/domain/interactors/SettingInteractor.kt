@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-interface  SettingInteractor{
+ interface  SettingInteractor{
     fun fetchSettings(): Flow<Either<MainFailures, Setting>>
     class Base @Inject constructor(
         private val themeSettingsRepository: ThemeSettingsRepository
