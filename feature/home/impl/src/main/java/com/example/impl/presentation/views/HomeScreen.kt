@@ -47,6 +47,7 @@ import com.example.impl.presentation.viewmodel.contract.HomeState
 import com.example.module_injector.navigation.NavigableRoutes
 import com.example.module_injector.navigation.OnNavigateTo
 import com.example.utils.extensions.shiftDay
+import com.example.utils.extensions.startThisDay
 import com.example.utils.managers.LocalDrawerManager
 import com.example.utils.platform.screen.ScreenContent
 import kotlinx.coroutines.launch
@@ -84,11 +85,11 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: 
                 }
             ) { paddingValues ->
                 HomeContent(
-                    modifier = Modifier.padding(paddingValues),
+                    modifier = Modifier.padding(paddingValues).background(color = MaterialTheme.colorScheme.surface),
                     onNavigateTo = onNavigateTo,
                     homeViewState = homeState,
                     onChangeDate = { date ->
-                        homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date))
+                        homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))
                     }
                 )
             }
@@ -99,6 +100,7 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: 
                 },
                 onDateSelected = { date ->
                     showDateDialog.value = false
+                    homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))
                 },
                 showDatePickerDialog = showDateDialog.value,
             )
