@@ -4,6 +4,8 @@
 
 package com.example.utils.platform.viemodel.store
 
+import android.util.Log
+import androidx.compose.foundation.interaction.HoverInteraction
 import com.example.utils.platform.communications.state.StateCommunicator
 import com.example.utils.platform.viemodel.contract.Actor
 import com.example.utils.platform.viemodel.contract.BaseAction
@@ -15,13 +17,19 @@ import com.example.utils.platform.viemodel.contract.Reducer
 import com.example.utils.platform.viemodel.contract.StateProvider
 import com.example.utils.platform.viemodel.work.WorkScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.lang.Exception
 
 interface BaseStore<S, E, A, F> : StateProvider<S>, EffectProvider<F> {
     fun sendEvent(event: E)
@@ -39,18 +47,22 @@ interface BaseStore<S, E, A, F> : StateProvider<S>, EffectProvider<F> {
     ) : BaseStore<S, E, A, F> {
 
         private val mutex = Mutex()
-        private val eventChannel: Channel<E> = Channel(capacity = Channel.UNLIMITED)
+        private val eventChannel: Channel<E> =
+            Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
         private val workScope = WorkScope.Base<S, E, A, F>(store = this)
 
         init {
             eventChannel
                 .receiveAsFlow()
-                .map {
+                .onEach {
                     actor.apply {
-                        workScope.handleEvent(it)
+                        scope.launch {
+                            workScope.handleEvent(it)
+                        }
                     }
                 }
-                .launchIn(scope)
+                .catch {
+                }.launchIn(scope)
         }
 
         override fun sendEvent(event: E) {

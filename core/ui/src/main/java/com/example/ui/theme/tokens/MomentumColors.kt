@@ -13,9 +13,9 @@ class MomentumColors(
     val isDark: Boolean
 )
 
-fun fetchMomentumColorsType(themeUiType: ThemeUiType, colorsUiType: ColorsUiType): MomentumColors =
+fun fetchMomentumColorsType(themeUiType: ThemeUiType, colorsUiType: ColorsUiType,isSystemInDarTheme: Boolean = false): MomentumColors =
     MomentumColors(
-        isDark = themeUiType.isDark(),
+        isDark = themeUiType.isDark(isSystemInDarTheme),
         colorsUiType = colorsUiType
     )
 

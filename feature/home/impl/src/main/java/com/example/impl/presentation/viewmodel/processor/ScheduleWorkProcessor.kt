@@ -17,8 +17,10 @@ import com.example.impl.presentation.mappers.schedule.mapToDomain
 import com.example.impl.presentation.model.schedule.TimeTaskUi
 import com.example.impl.presentation.viewmodel.contract.HomeAction
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
+import com.example.utils.extensions.startThisDay
 import com.example.utils.functional.Constants
 import com.example.utils.functional.Either
+import com.example.utils.managers.DateManager
 import com.example.utils.platform.viemodel.work.FlowWorkProcessor
 import com.example.utils.platform.viemodel.work.WorkCommand
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +36,8 @@ internal interface ScheduleWorkProcessor :
         private val settingInteractor: SettingsInteractor,
         private val scheduleInteractor: ScheduleInteractor,
         private val timeShiftInteractor: TimeShiftInteractor,
-        private val scheduleDomainToUiMapper: ScheduleDomainToUiMapper
+        private val scheduleDomainToUiMapper: ScheduleDomainToUiMapper,
+        private val dateManager: DateManager
     ) : ScheduleWorkProcessor {
         override suspend fun doWork(command: ScheduleWorkCommand): Flow<Either<HomeAction, HomeEffect>> {
             return when (command) {
@@ -161,8 +164,9 @@ internal interface ScheduleWorkProcessor :
             }
         }
 
-        private suspend fun loadScheduleByDate(date: Date): Flow<Either<HomeAction, HomeEffect>> {
-            return scheduleInteractor.fetchScheduleByDate(date.time)
+        private suspend fun loadScheduleByDate(date: Date?): Flow<Either<HomeAction, HomeEffect>> {
+            val scheduleDate = date?:dateManager.fetchCurrentDate().startThisDay()
+            return scheduleInteractor.fetchScheduleByDate(scheduleDate.time)
                 .map<Either<HomeFailures, Schedule?>, Either<HomeAction, HomeEffect>> {
                     when (it) {
                         is Either.Left<HomeFailures> -> Either.Right(HomeEffect.ShowError(it.data))
@@ -176,7 +180,7 @@ internal interface ScheduleWorkProcessor :
                             } else {
                                 Either.Left(
                                     HomeAction.SetUpEmptySchedule(
-                                        date = date,
+                                        date = scheduleDate,
                                         scheduleStatus = null
                                     )
                                 )
@@ -207,7 +211,7 @@ internal interface ScheduleWorkProcessor :
 internal sealed class ScheduleWorkCommand : WorkCommand {
     data class CreateSchedule(val date: Date) : ScheduleWorkCommand()
     data object SetUpSettings : ScheduleWorkCommand()
-    data class LoadScheduleByDate(val date: Date) : ScheduleWorkCommand()
+    data class LoadScheduleByDate(val date: Date?) : ScheduleWorkCommand()
     data class ChangeTaskDoneState(val date: Date, val key: Long) : ScheduleWorkCommand()
     data class ChangeTaskViewStatus(val status: ViewToggleStatus) : ScheduleWorkCommand()
     data class TimeTaskShiftUp(val task: TimeTaskUi) : ScheduleWorkCommand()

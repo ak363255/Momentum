@@ -6,8 +6,8 @@ package com.example.ui.theme.materials
 
 enum class ThemeUiType {
     DEFAULT, LIGHT, DARK;
-    fun isDark(): Boolean = when(this){
-        ThemeUiType.DEFAULT -> true
+    fun isDark(isSystemInDarkTheme: Boolean = false): Boolean = when(this){
+        ThemeUiType.DEFAULT -> isSystemInDarkTheme
         ThemeUiType.LIGHT -> false
         ThemeUiType.DARK -> true
     }
@@ -27,8 +27,8 @@ enum class ColorsUiType {
     }
 }
 
-fun ThemeUiType.toColorScheme(colorType: ColorsUiType) = when (this) {
-    ThemeUiType.DEFAULT -> colorType.fetchDarkColorScheme()
+fun ThemeUiType.toColorScheme(colorType: ColorsUiType,isDark : Boolean = false) = when (this) {
+    ThemeUiType.DEFAULT -> if(isDark) colorType.fetchDarkColorScheme() else colorType.fetchLightColorScheme()
     ThemeUiType.LIGHT -> colorType.fetchLightColorScheme()
     ThemeUiType.DARK -> colorType.fetchDarkColorScheme()
 }

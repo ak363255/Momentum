@@ -4,9 +4,12 @@
 
 package com.example.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import com.example.ui.theme.materials.AppTypography
 import com.example.ui.theme.materials.ColorsUiType
 import com.example.ui.theme.materials.ThemeUiType
 import com.example.ui.theme.materials.toColorScheme
@@ -29,19 +32,20 @@ fun MomentumTheme(
 ){
     val appLanguage = fetchLanguage(languageUiType)
     val coreStrings = fetchCoreStrings(appLanguage)
-    val appColors = fetchMomentumColorsType(themeUiType,colorsUiType)
+    val appColors = fetchMomentumColorsType(themeUiType,colorsUiType, isSystemInDarTheme = isSystemInDarkTheme())
     val appIcons = fetchCoreIcons()
     MaterialTheme(
-        colorScheme = themeUiType.toColorScheme(colorsUiType),
+        colorScheme = themeUiType.toColorScheme(colorsUiType, isDark = isSystemInDarkTheme()),
+        typography = AppTypography,
         content = {
             CompositionLocalProvider(
                 LocalMomentumLanguage provides appLanguage,
                 LocalMomentumColors provides appColors,
                 LocalMomentumString provides coreStrings,
                 LocalMomentumIcons provides appIcons,
-                content = content
+                content = content,
             )
-        }
+        },
 
     )
 }

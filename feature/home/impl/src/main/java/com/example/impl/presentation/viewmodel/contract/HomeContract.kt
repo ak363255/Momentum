@@ -22,7 +22,7 @@ internal sealed class HomeEvent : BaseEvent {
     data object Init : HomeEvent()
     data object PressedOverviewButton : HomeEvent()
     data object CreateSchedule : HomeEvent()
-    data class LoadSchedule(val date: Date) : HomeEvent()
+    data class LoadSchedule(val date: Date?) : HomeEvent()
     data object PressViewToggleButton : HomeEvent()
     data class ChangeTaskDoneUi(val taskUi: TimeTaskUi) : HomeEvent()
     data class TimeTaskShiftUp(val task: TimeTaskUi) : HomeEvent()

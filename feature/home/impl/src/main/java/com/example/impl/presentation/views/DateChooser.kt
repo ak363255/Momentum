@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.ui.theme.tokens.LocalMomentumString
+import com.example.utils.extensions.mapToDate
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,13 +32,16 @@ internal fun HomeDatePicker(
     if (showDatePickerDialog) {
         val datePickerState = rememberDatePickerState()
         val confirmEnable by derivedStateOf {
-            datePickerState.selectableDates != null
+            datePickerState.selectedDateMillis != null
         }
         DatePickerDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
                 TextButton(
-                    onClick = {}, enabled = confirmEnable
+                    onClick = {
+                        onDateSelected(datePickerState.selectedDateMillis!!.mapToDate())
+
+                    }, enabled = confirmEnable
                 ) {
                     Text(
                         text = LocalMomentumString.current.confirmTitle,
