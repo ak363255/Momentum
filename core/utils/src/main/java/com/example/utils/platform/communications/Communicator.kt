@@ -8,16 +8,12 @@ import android.util.Log
 import com.example.utils.platform.viemodel.contract.BaseEffect
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
 
 
 interface Communicator<S> {
@@ -29,8 +25,8 @@ interface Communicator<S> {
         private var flow: MutableStateFlow<S> = MutableStateFlow(initialState)
         override suspend fun read(): S = flow.value
 
-        override fun update(data: S) {
-            flow.value = data
+        override fun update(state: S) {
+            flow.value = state
         }
 
         override suspend fun collect(collector: FlowCollector<S>) {
@@ -51,9 +47,9 @@ interface Communicator<S> {
             return flow.consumeAsFlow().first()
         }
 
-        override fun update(data: F) {
-            Log.d("WORK"," update ${data}")
-            flow.trySend(data)
+        override fun update(state: F) {
+            Log.d("WORK"," update ${state}")
+            flow.trySend(state)
         }
 
         override suspend fun collect(collector: FlowCollector<F>) {

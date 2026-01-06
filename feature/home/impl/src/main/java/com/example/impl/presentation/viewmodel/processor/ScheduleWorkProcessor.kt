@@ -26,10 +26,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
+import javax.inject.Inject
 
 internal interface ScheduleWorkProcessor :
     FlowWorkProcessor<ScheduleWorkCommand, HomeAction, HomeEffect> {
-    class Base(
+    class Base @Inject constructor(
         private val settingInteractor: SettingsInteractor,
         private val scheduleInteractor: ScheduleInteractor,
         private val timeShiftInteractor: TimeShiftInteractor,

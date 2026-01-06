@@ -6,11 +6,12 @@ package com.example.domain.common
 
 import com.example.domain.models.schedule.DailScheduleStatus
 import java.util.Date
+import javax.inject.Inject
 
 interface ScheduleStatusChecker {
     fun fetchStatus(requiredDate: Date, currentDate: Date): DailScheduleStatus
 
-    class Base : ScheduleStatusChecker {
+    class Base @Inject constructor() : ScheduleStatusChecker {
         override fun fetchStatus(
             requiredDate: Date,
             currentDate: Date

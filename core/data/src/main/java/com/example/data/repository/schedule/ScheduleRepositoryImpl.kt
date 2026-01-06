@@ -14,8 +14,9 @@ import com.example.domain.repository.schedule.ScheduleRepository
 import com.example.utils.functional.TimeRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ScheduleRepositoryImpl(
+class ScheduleRepositoryImpl @Inject constructor(
     private val scheduleLocalDataSource: ScheduleLocalDataSource,
     private val scheduleToDomainMapper: ScheduleToDomainMapper
 ) : ScheduleRepository {

@@ -9,9 +9,10 @@ import com.example.impl.presentation.model.schedule.ScheduleUi
 import com.example.utils.extensions.mapToDate
 import com.example.utils.functional.Mapper
 import com.example.utils.managers.DateManager
+import javax.inject.Inject
 
 internal interface ScheduleDomainToUiMapper : Mapper<Schedule, ScheduleUi>{
-    class Base(
+    class Base @Inject constructor(
         private val timeTaskMapper : TimeTaskDomainToUiMapper,
         private val dateManager: DateManager
     ): ScheduleDomainToUiMapper{

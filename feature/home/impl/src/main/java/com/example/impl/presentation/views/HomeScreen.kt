@@ -11,10 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.impl.presentation.theme.HomeTheme
+import com.example.impl.presentation.viewmodel.HomeScreenViewModel
 import com.example.module_injector.navigation.NavigableRoutes
 import com.example.module_injector.navigation.OnNavigateTo
 import com.example.utils.managers.LocalDrawerManager
@@ -23,7 +25,8 @@ import kotlinx.coroutines.launch
 
 internal fun NavGraphBuilder.home(navHostController: NavHostController) {
     composable<NavigableRoutes.MainPage> {
-        HomeScreen { destination, navOption ->
+        val homeScreenViewmodel  : HomeScreenViewModel = hiltViewModel()
+        HomeScreen() { destination, navOption ->
             navHostController.navigate(destination, navOption)
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.data.datasources.schedule.ScheduleDao
 import com.example.data.datasources.schedule.ScheduleDatabase
 import com.example.data.datasources.schedule.ScheduleDatabaseCallback
+import com.example.data.datasources.schedule.ScheduleLocalDataSource
 import com.example.data.datasources.setting.SettingsDataBase
 import com.example.data.datasources.setting.SettingsDataBaseCallback
 import com.example.data.datasources.setting.ThemeLocalDataSource
@@ -48,4 +49,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideScheduleDao(scheduleDatabase : ScheduleDatabase): ScheduleDao = scheduleDatabase.getScheduleDao()
+
+    @Singleton
+    @Provides
+    fun provideScheduleLocalDataSource(scheduleLocalDataSource: ScheduleLocalDataSource.Base): ScheduleLocalDataSource = scheduleLocalDataSource
+
 }

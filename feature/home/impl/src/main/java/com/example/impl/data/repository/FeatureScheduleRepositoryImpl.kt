@@ -7,8 +7,9 @@ package com.example.impl.data.repository
 import com.example.impl.data.datasources.FeatureScheduleLocalDataSource
 import com.example.impl.domain.repository.FeatureScheduleRepository
 import java.util.Date
+import javax.inject.Inject
 
-internal class FeatureScheduleRepositoryImpl(
+internal class FeatureScheduleRepositoryImpl @Inject constructor(
     val featureScheduleLocalDataSource: FeatureScheduleLocalDataSource
 ) : FeatureScheduleRepository {
     override suspend fun fetchFeatureScheduleDate(): Date? {

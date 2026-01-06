@@ -14,10 +14,11 @@ import com.example.impl.presentation.model.schedule.TimeTaskUi
 import com.example.utils.extensions.duration
 import com.example.utils.functional.ParametrizedMapper
 import com.example.utils.managers.DateManager
+import javax.inject.Inject
 
 internal interface TimeTaskDomainToUiMapper : ParametrizedMapper<TimeTask, TimeTaskUi, Boolean>{
 
-    class Base(
+    class Base @Inject constructor(
         private val dateManager: DateManager,
         private val timeTaskStatusChecker : TimeTaskStatusChecker
     ) : TimeTaskDomainToUiMapper{
