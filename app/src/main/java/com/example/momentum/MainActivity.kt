@@ -1,5 +1,7 @@
 package com.example.momentum
 
+import android.app.ComponentCaller
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -31,15 +33,16 @@ class MainActivity : ComponentActivity() {
 
     val tabScreenViewModel : TabScreenViewModel by viewModels()
     val mainViewModel: MainViewModel by viewModels()
-    var waitSplash: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        installSplashScreen().setKeepOnScreenCondition {
-             waitSplash
-        }
+       /* installSplashScreen().setKeepOnScreenCondition {
+            mainViewState.waitSplash
+        }*/
         setContent {
             ScreenContent(contractProvider = mainViewModel) { mainViewState ->
+
                 MomentumTheme(
                     languageUiType = mainViewState.language,
                     themeUiType = mainViewState.theme,
@@ -50,7 +53,6 @@ class MainActivity : ComponentActivity() {
                         when (mainEffect) {
                             MainEffect.GoToMainPage -> {
                                 Log.d("WORK","called go to main page")
-                                waitSplash = false
                             }
                             MainEffect.DoNothing -> {}
                         }
@@ -59,5 +61,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 

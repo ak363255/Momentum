@@ -37,11 +37,13 @@ class MainViewModel @Inject constructor(
         currentState: MainViewState
     ): MainViewState {
         return when(action){
-            is MainAction.ChangeSettings -> currentState.copy(
-                language = action.languageUiType,
-                theme = action.themeUiType,
-                color = action.colorsUiType
-            )
+            is MainAction.ChangeSettings ->{
+                currentState.copy(
+                    language = action.languageUiType,
+                    theme = action.themeUiType,
+                    color = action.colorsUiType,
+                )
+            }
         }
     }
 

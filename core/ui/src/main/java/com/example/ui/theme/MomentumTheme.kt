@@ -5,10 +5,14 @@
 package com.example.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import com.example.ui.theme.materials.AppTypography
 import com.example.ui.theme.materials.ColorsUiType
 import com.example.ui.theme.materials.ThemeUiType
@@ -30,12 +34,13 @@ fun MomentumTheme(
      colorsUiType: ColorsUiType,
      content : @Composable ()-> Unit
 ){
-    val appLanguage = fetchLanguage(languageUiType)
-    val coreStrings = fetchCoreStrings(appLanguage)
-    val appColors = fetchMomentumColorsType(themeUiType,colorsUiType, isSystemInDarTheme = isSystemInDarkTheme())
-    val appIcons = fetchCoreIcons()
+    val isDark = isSystemInDarkTheme()
+    val appLanguage = remember(languageUiType){ fetchLanguage(languageUiType)}
+    val coreStrings = remember(appLanguage){fetchCoreStrings(appLanguage)}
+    val appColors = remember(themeUiType,isDark,colorsUiType){fetchMomentumColorsType(themeUiType,colorsUiType, isSystemInDarTheme = isDark)}
+    val appIcons = remember { fetchCoreIcons() }
     MaterialTheme(
-        colorScheme = themeUiType.toColorScheme(colorsUiType, isDark = isSystemInDarkTheme()),
+        colorScheme = themeUiType.toColorScheme(colorsUiType, isDark = isDark),
         typography = AppTypography,
         content = {
             CompositionLocalProvider(
@@ -43,7 +48,14 @@ fun MomentumTheme(
                 LocalMomentumColors provides appColors,
                 LocalMomentumString provides coreStrings,
                 LocalMomentumIcons provides appIcons,
-                content = content,
+                content = {
+                    Surface  (  modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background) {
+                        content()
+                    }
+                }
+
+
             )
         },
 
