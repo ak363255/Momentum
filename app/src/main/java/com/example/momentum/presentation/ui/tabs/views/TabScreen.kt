@@ -25,6 +25,7 @@ import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEvent
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
 import com.example.utils.managers.rememberDrawerManager
 import com.example.utils.platform.screen.ScreenContent
+
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
