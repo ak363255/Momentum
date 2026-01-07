@@ -14,6 +14,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.impl.presentation.theme.token.LocalHomeStrings
@@ -31,8 +32,10 @@ internal fun HomeDatePicker(
 ) {
     if (showDatePickerDialog) {
         val datePickerState = rememberDatePickerState()
-        val confirmEnable by derivedStateOf {
-            datePickerState.selectedDateMillis != null
+        val confirmEnable by remember {
+            derivedStateOf {
+                datePickerState.selectedDateMillis != null
+            }
         }
         DatePickerDialog(
             onDismissRequest = onDismiss,
