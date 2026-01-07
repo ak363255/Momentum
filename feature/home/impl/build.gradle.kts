@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:utils"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:Home:api"))
+    implementation(project(":feature:home:api"))
     implementation(project(":module-injector"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

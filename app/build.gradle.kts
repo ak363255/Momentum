@@ -54,8 +54,8 @@ dependencies {
     implementation(project(":feature:settings:impl"))
     implementation(project(":feature:settings:api"))
 
-    implementation(project(":feature:Home:impl"))
-    implementation(project(":feature:Home:api"))
+    implementation(project(":feature:home:impl"))
+    implementation(project(":feature:home:api"))
     implementation(project(":module-injector"))
 
     implementation(libs.androidx.core.ktx)
