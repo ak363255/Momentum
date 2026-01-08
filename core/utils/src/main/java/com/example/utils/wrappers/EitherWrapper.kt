@@ -9,6 +9,7 @@ import com.example.utils.functional.Either
 import com.example.utils.handlers.ErrorHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.CancellationException
 
@@ -35,11 +36,16 @@ interface FlowEitherWrapper<F : DomainFailures> : EitherWrapper<F>{
     abstract class  Abstract<F : DomainFailures>(private val errorHandler: ErrorHandler<F>) :
         FlowEitherWrapper<F>, EitherWrapper.Abstract<F>(errorHandler) {
         override fun <O> wrapFlow(block: () -> Flow<O>): Flow<Either<F, O>> {
-            return block().map {
-                Either.Right(it)
-            }.catch {
-                if (it is CancellationException) throw it
-                Either.Left(errorHandler.handle(it))
+            return flow {
+                try {
+                    block().collect { value ->
+                        emit(Either.Right(value))
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    emit(Either.Left(errorHandler.handle(e)))
+                }
             }
         }
     }

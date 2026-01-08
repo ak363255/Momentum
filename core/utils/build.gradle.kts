@@ -63,6 +63,10 @@ dependencies {
 
     //compose navigation
     implementation(libs.androidx.navigation.compose)
+    api(libs.kotlinx.coroutines.test)
+    api(libs.kotlin.test)
+// match your Kotlin version
+    api(libs.mockk)
 
 
 }
