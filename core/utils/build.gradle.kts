@@ -67,6 +67,13 @@ dependencies {
     api(libs.kotlin.test)
 // match your Kotlin version
     api(libs.mockk)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.androidx.core.testing)
+// For LiveData/ViewModel testing
+
+
+
 
 
 }

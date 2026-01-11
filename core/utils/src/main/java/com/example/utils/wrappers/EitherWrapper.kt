@@ -4,6 +4,7 @@
 
 package com.example.utils.wrappers
 
+import androidx.lifecycle.liveData
 import com.example.utils.functional.DomainFailures
 import com.example.utils.functional.Either
 import com.example.utils.handlers.ErrorHandler
@@ -36,12 +37,8 @@ interface FlowEitherWrapper<F : DomainFailures> : EitherWrapper<F>{
     abstract class  Abstract<F : DomainFailures>(private val errorHandler: ErrorHandler<F>) :
         FlowEitherWrapper<F>, EitherWrapper.Abstract<F>(errorHandler) {
         override fun <O> wrapFlow(block: () -> Flow<O>): Flow<Either<F, O>> {
-            return flow {
-                block.invoke().catch { error ->
-                    this@flow.emit(Either.Left(data = errorHandler.handle(error)))
-                }.collect { data ->
-                    emit(Either.Right(data = data))
-                }
+            return block().map<O, Either<F,O>>{ data -> Either.Right(data) }.catch { exception ->
+                emit(Either.Left(errorHandler.handle(exception)))
             }
         }
     }

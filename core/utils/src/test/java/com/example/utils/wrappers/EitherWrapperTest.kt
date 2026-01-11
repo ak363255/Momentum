@@ -5,10 +5,13 @@ import com.example.utils.functional.Either
 import com.example.utils.handlers.ErrorHandler
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.currentTime
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 
@@ -93,6 +96,13 @@ class EitherWrapperTest {
         coEvery { errorHandler.handle(any()) } returns testFailure
         val result: Either<DomainFailures, String?> = eitherWrapper.wrap { null }
         assert(result is Either.Right && result.data ==  null)
+    }
+
+    @Test
+    fun test1() = runTest{
+        assertEquals(0,currentTime)
+        delay(1000)
+        assertEquals(1000,currentTime)
     }
 
 
