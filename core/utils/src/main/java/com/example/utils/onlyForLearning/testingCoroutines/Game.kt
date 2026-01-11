@@ -8,7 +8,7 @@ class Game(
     val score : Score = Score(highestScore = 0),
     val question: List<Question>
 ) {
-    private var currentIndex = 0
+    private var currentIndex = -1
      val currentScore: Int
         get() = score.currentScore
      val highestScore: Int

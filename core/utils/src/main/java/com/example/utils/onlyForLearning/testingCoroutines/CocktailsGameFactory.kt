@@ -20,7 +20,7 @@ interface CocktailsGameFactory {
                     override fun success(data: List<Cocktail>) {
                         val scope = Score(cocktailRepository.getHighScore())
                         val questions = buildQuestions(data)
-                          callback.success(Game(question = questions, score = scope))
+                        callback.success(Game(question = questions, score = scope))
                     }
                     override fun onError(e: String) {
                           callback.onError()
