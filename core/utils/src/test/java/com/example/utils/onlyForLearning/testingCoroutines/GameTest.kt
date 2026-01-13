@@ -11,7 +11,11 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class GameTest {
@@ -139,5 +143,23 @@ class GameTest {
         verify(exactly = 0) {
             score.incrementScore()
         }
+    }
+
+    @Test
+    fun `When answering incorrectly answer method return false`(){
+        val question : Question = mock()
+        whenever(question.answer(any())).thenReturn(false)
+        val game = Game(question = listOf(question))
+        val answer = game.answer(question,"INCORRECT")
+        assertEquals(false,answer)
+    }
+
+    @Test
+    fun `When answering correct answer method return true`(){
+        val question : Question = mock()
+        whenever(question.answer(any())).thenReturn(true)
+        val game = Game(question = listOf(question))
+        val answer = game.answer(question,"CORRECT")
+        assertEquals(true,answer)
     }
 }

@@ -43,6 +43,22 @@ class CocktailGameViewModel(
         })
     }
 
+    private var inCorrectCount = 0
+    fun answer(question: Question,ans: String){
+        val result = game?.answer(question,ans)?:false
+        if(!result){
+            inCorrectCount++
+            if(inCorrectCount>=3){
+                finishGame()
+            }
+        }else{
+            inCorrectCount = 0
+        }
+    }
+
+    fun finishGame(){
+
+    }
     fun nextQuestion(){
         questionLiveData.value = game?.nextQuestion()
     }

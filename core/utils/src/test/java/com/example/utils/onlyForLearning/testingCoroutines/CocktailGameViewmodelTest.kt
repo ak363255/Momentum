@@ -7,6 +7,7 @@ package com.example.utils.onlyForLearning.testingCoroutines
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,6 +15,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -132,6 +134,20 @@ class CocktailGameViewmodelTest {
         verify(questionObserver).onChanged(eq(question2))
     }
 
+
+    @Test
+    fun `When answering three times incorrectly should call finish game`() = runTest{
+        whenever(game.answer(any(),any())).thenReturn(false)
+        val spyViewmodel = spy(cocktailGameViewModel)
+         setUpFactoryWithSuccess(game)
+        spyViewmodel.initGame()
+        spyViewmodel.answer(mock(),"INCORRECT")
+        spyViewmodel.nextQuestion()
+        spyViewmodel.answer(mock(),"INCORRECT")
+        spyViewmodel.nextQuestion()
+        spyViewmodel.answer(mock(),"INCORRECT")
+        verify(spyViewmodel).finishGame()
+    }
 
 
     private fun setUpFactoryWithSuccess(game: Game) {

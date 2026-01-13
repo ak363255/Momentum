@@ -24,9 +24,11 @@ class Game(
         return question[currentIndex]
     }
 
-    fun answer(question: Question, answer: String) {
+    fun answer(question: Question, answer: String) : Boolean{
         if (question.answer(answer)) {
             incrementScore()
+            return true
         }
+        return false
     }
 }
