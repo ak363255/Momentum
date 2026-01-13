@@ -38,6 +38,12 @@ android {
     buildFeatures {
         compose = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -51,7 +57,16 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.androidx.core.testing)
+// For LiveData/ViewModel testing
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.junit.ktx)
+
 }
