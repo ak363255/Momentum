@@ -9,3 +9,14 @@ data class Wishlist(
     val wishes : List<String>,
     val id : Int
 )
+
+fun Wishlist.toEntity() = WishlistEntity(
+    name = this.name,
+    id = this.id,
+    wishes = this.wishes.joinToString(",")
+)
+fun WishlistEntity.toWishList() = Wishlist(
+    name = this.name,
+    id = this.id,
+    wishes = this.wishes.split(",")
+)

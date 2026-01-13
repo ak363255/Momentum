@@ -25,7 +25,7 @@ class DetailViewmodelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     lateinit var detailViewmodel: DetailViewmodel
-    lateinit var wishlistDao: WishlistDao
+    lateinit var wishListRepository: WishListRepository
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
@@ -33,8 +33,8 @@ class DetailViewmodelTest {
     @Before
     fun setUp(){
         Dispatchers.setMain(testDispatcher)
-        wishlistDao = mock()
-        detailViewmodel = DetailViewmodel(wishlistDao)
+        wishListRepository = mock()
+        detailViewmodel = DetailViewmodel(wishListRepository)
     }
 
 
@@ -42,7 +42,7 @@ class DetailViewmodelTest {
     fun `Save new item call to database`() = runTest(testDispatcher){
         val wishList = Wishlist(name =  "victoria", wishes = listOf("Iphone"),id = 1)
          detailViewmodel.saveWishList(wishList)
-        verify(wishlistDao).save(any())
+        verify(wishListRepository).saveWishlist(any())
     }
 
     @After

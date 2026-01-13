@@ -6,14 +6,15 @@ package com.example.ui.onlyForLearning.roboelectricTesting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.utils.onlyForLearning.testingCoroutines.flowTesting.AppointmentRepository
 import kotlinx.coroutines.launch
 
-class DetailViewmodel(val wishlistDao: WishlistDao) : ViewModel() {
+class DetailViewmodel(val wishListRepository: WishListRepository) : ViewModel() {
 
 
     fun saveWishList(wishList: Wishlist){
         viewModelScope.launch {
-            wishlistDao.save(wishList)
+            wishListRepository.saveWishlist(wishList)
         }
     }
 }
