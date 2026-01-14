@@ -10,5 +10,9 @@ internal object HiHomeStrings : HomeCoreStrings {
     override val topAppbarOverviewTitle: String = "सारांश"
     override val datePickerTitle: String = "दैनिक योजना"
     override val datePickerHeadline: String get() = "तारीख़ चुनें"
+    override val createScheduleTitle: String = "अभी प्लान करें"
+    override val emptyScheduleTitle: String = "अभी कोई योजना नहीं है"
+
+
 
 }

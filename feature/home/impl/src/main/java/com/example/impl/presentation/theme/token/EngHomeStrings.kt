@@ -10,4 +10,6 @@ internal object EngHomeStrings : HomeCoreStrings{
     override val topAppbarOverviewTitle: String = "Overview"
     override val datePickerTitle: String = "Daily Plan"
     override val datePickerHeadline: String get() = "Select a date"
+    override val createScheduleTitle :String = "Plan now"
+    override val emptyScheduleTitle :String= "Nothing planned yet"
 }

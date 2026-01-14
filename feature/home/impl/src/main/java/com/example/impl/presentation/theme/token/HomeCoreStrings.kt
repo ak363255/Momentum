@@ -13,6 +13,10 @@ internal interface HomeCoreStrings {
     val topAppbarOverviewTitle: String
     val datePickerTitle : String
     val datePickerHeadline : String
+
+    val createScheduleTitle :String
+
+    val emptyScheduleTitle :String
 }
 
 internal val LocalHomeStrings =

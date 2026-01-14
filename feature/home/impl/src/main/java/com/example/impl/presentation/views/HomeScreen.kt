@@ -4,9 +4,12 @@
 
 package com.example.impl.presentation.views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,13 +37,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.impl.presentation.theme.HomeTheme
+import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.impl.presentation.viewmodel.HomeScreenViewModel
 import com.example.impl.presentation.viewmodel.contract.HomeEvent
 import com.example.impl.presentation.viewmodel.contract.HomeState
@@ -85,7 +91,9 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: 
                 }
             ) { paddingValues ->
                 HomeContent(
-                    modifier = Modifier.padding(paddingValues).background(color = MaterialTheme.colorScheme.surface),
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .background(color = MaterialTheme.colorScheme.surface),
                     onNavigateTo = onNavigateTo,
                     homeViewState = homeState,
                     onChangeDate = { date ->
@@ -123,7 +131,12 @@ internal fun HomeContent(
     Column(modifier = modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(8.dp))
         DateChooserSection(homeState = homeViewState, onChangeDate = onChangeDate)
-        ScheduleSection()
+        ScheduleSection(
+            homeViewState, modifier = Modifier,
+            onCreateSchedule = {
+
+            }
+        )
     }
 
 }
@@ -243,7 +256,80 @@ internal fun DateChooserSection(homeState: HomeState, onChangeDate: (Date) -> Un
 }
 
 @Composable
-internal fun ScheduleSection() {
+internal fun ScheduleSection(homeState: HomeState, modifier: Modifier = Modifier,onCreateSchedule: () -> Unit) {
+    Box(modifier = modifier.fillMaxSize()) {
+        HomeScheduleList(homeState)
+        HomeEmptyScheduleView(homeState,onCreateSchedule = onCreateSchedule)
+    }
 
+}
+
+@Composable
+internal fun HomeScheduleList(homeState: HomeState) {
+    if (homeState.timeTask.isNotEmpty()) {
+
+    }
+}
+
+
+@Composable
+internal fun HomeEmptyScheduleView(homeState: HomeState, modifier: Modifier = Modifier,onCreateSchedule: () -> Unit) {
+    if (homeState.timeTask.isEmpty()) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            val homeStringRes = LocalHomeStrings.current
+            EmptyScheduleView(emptyTitle = homeStringRes.emptyScheduleTitle, ctaText = homeStringRes.createScheduleTitle,onCreateSchedule)
+        }
+
+    }
+}
+
+@Composable
+fun EmptyScheduleView(emptyTitle: String, ctaText: String,onCreateSchedule : ()-> Unit) {
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(com.example.impl.R.drawable.ic_not_found),
+            contentDescription = null,
+            modifier = Modifier.size(48.dp),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = emptyTitle,
+            modifier = Modifier,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+        Spacer(Modifier.height(12.dp))
+        SchedulePlanCta(modifier = Modifier, ctaText,onCreateSchedule)
+    }
+}
+
+@Composable
+internal fun SchedulePlanCta(modifier: Modifier, ctaText: String, onCreateSchedule: () -> Unit) {
+    Row(
+        modifier = modifier
+            .noRippleClickable(onClick = onCreateSchedule)
+            .padding(horizontal = 48.dp)
+            .border(width = 1.dp,color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), shape = RoundedCornerShape(percent = 50))
+            .padding(horizontal = 32.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(com.example.impl.R.drawable.ic_add),
+            contentDescription = null,
+            modifier = Modifier.size(18.dp),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(text = ctaText, style = MaterialTheme.typography.bodyMedium)
+    }
 }
 
