@@ -5,25 +5,15 @@
 package com.example.momentum.di.modules
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import com.example.module_injector.navigation.Navigable
+import com.example.ui.views.RootNavigator
 
-interface RootNavigator {
+
+class RootNavigatorBase(private val navController: NavController): RootNavigator {
     @Composable
-    fun NavigateTo(destination : Navigable,navOptions: NavOptions)
-
-    class Base(private val navController: NavController): RootNavigator{
-        @Composable
-        override fun NavigateTo(
-            destination: Navigable,
-            navOptions: NavOptions
-        ) {
-            navController.navigate(destination,navOptions)
-        }
-
+    override fun provideRootNavHostController(): NavController {
+        return navController
     }
 }
 
-val LocalRootNavigator = staticCompositionLocalOf<RootNavigator> { error("Please provide") }
+

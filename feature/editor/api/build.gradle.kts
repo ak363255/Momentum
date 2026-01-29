@@ -1,14 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id ("org.jetbrains.kotlin.plugin.serialization")
-
 }
 
 android {
-    namespace = "com.example.ui"
+    namespace = "com.example.api"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -35,23 +34,15 @@ android {
         compilerOptions {
             // We parse the string from your libs.versions to the required JvmTarget type
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
-        }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
+        }    }
 }
 
 dependencies {
-
+    implementation(project(":module-injector"))
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
     implementation(project(":core:utils"))
+    implementation(project(":core:ui"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,8 +51,18 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
 
     //RoomDependency
     implementation(libs.androidx.room.runtime)
@@ -80,21 +81,8 @@ dependencies {
     // optional - Paging 3 Integration
     implementation(libs.androidx.room.paging)
 
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-
     //compose navigation
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.kotlinx.serialization.json)
-
-
-    testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.androidx.core.testing)
-// For LiveData/ViewModel testing
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.junit.ktx)
-
 }

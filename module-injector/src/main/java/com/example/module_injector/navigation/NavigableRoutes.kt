@@ -5,9 +5,6 @@ import kotlinx.serialization.Serializable
 sealed class NavigableRoutes : Navigable {
 
     @Serializable
-    data object EditorMainPage : NavigableRoutes()
-
-    @Serializable
     data object AnalyticsPage : NavigableRoutes()
 
     @Serializable

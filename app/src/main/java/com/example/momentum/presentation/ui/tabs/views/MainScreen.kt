@@ -12,14 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.module_injector.navigation.NavigableRoutes
-import com.example.momentum.di.modules.LocalRootNavigator
-import com.example.momentum.di.modules.RootNavigator
+import com.example.momentum.di.modules.RootNavigatorBase
 import com.example.momentum.di.modules.TabFeatureProvider
+import com.example.ui.views.LocalRootNavigator
 
 @Composable
 fun MainScreen(tabFeatureProvider: TabFeatureProvider) {
     val rootNavController = rememberNavController()
-    val rootNavigator = remember { RootNavigator.Base(rootNavController) }
+    val rootNavigator = remember { RootNavigatorBase(rootNavController) }
     CompositionLocalProvider(
         LocalRootNavigator provides rootNavigator
     ) {
