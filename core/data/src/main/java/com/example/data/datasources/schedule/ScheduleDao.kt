@@ -3,7 +3,9 @@ package com.example.data.datasources.schedule
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.data.models.schedules.DailyScheduleEntity
 import com.example.data.models.schedules.ScheduleDetails
@@ -19,13 +21,15 @@ interface ScheduleDao {
     @Query("SELECT * FROM dailySchedules")
      fun fetchAllSchedules(): Flow<List<ScheduleDetails>>
 
+     @Transaction
     @Query("SELECT * FROM dailySchedules WHERE date = :date")
     fun fetchScheduleByDate(date: Long): Flow<ScheduleDetails?>
 
+    @Transaction
     @Query("SELECT * FROM dailySchedules WHERE date >= :from AND date <= :to")
     fun fetchScheduleByDateRange(from: Long, to: Long): Flow<List<ScheduleDetails>>
 
-    @Insert(entity = DailyScheduleEntity::class)
+    @Insert(entity = DailyScheduleEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addDailSchedules(schedules: List<DailyScheduleEntity>)
 
     @Insert(entity = TimeTaskEntity::class)

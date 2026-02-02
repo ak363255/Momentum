@@ -54,6 +54,8 @@ dependencies {
     implementation(project(":feature:settings:impl"))
     implementation(project(":feature:settings:api"))
 
+    implementation(project(":feature:editor:impl"))
+    implementation(project(":feature:editor:api"))
     implementation(project(":feature:home:impl"))
     implementation(project(":feature:home:api"))
     implementation(project(":module-injector"))

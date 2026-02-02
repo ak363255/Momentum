@@ -1,18 +1,12 @@
 package com.example.momentum
 
-import android.app.ComponentCaller
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.ui.Modifier
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.data.datasources.schedule.ScheduleDao
-import com.example.momentum.di.modules.TabFeatureProvider
+import com.example.momentum.di.modules.FeatureEntryProvider
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
 import com.example.momentum.presentation.ui.tabs.views.MainScreen
@@ -20,16 +14,13 @@ import com.example.momentum.presentation.viewmodel.MainViewModel
 import com.example.ui.theme.MomentumTheme
 import com.example.utils.platform.screen.ScreenContent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var tabFeatureProvider: TabFeatureProvider
+    lateinit var featureEntryProvider: FeatureEntryProvider
 
     val tabScreenViewModel : TabScreenViewModel by viewModels()
     val mainViewModel: MainViewModel by viewModels()
@@ -48,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     themeUiType = mainViewState.theme,
                     colorsUiType = mainViewState.color
                 ) {
-                    MainScreen(tabFeatureProvider = tabFeatureProvider)
+                    MainScreen(featureEntry = featureEntryProvider)
                     collectEffect { mainEffect ->
                         when (mainEffect) {
                             MainEffect.GoToMainPage -> {

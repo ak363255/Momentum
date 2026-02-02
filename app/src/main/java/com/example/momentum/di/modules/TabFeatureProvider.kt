@@ -1,22 +1,15 @@
 package com.example.momentum.di.modules
 
+import com.example.api.navigation.EditorFeatureEntry
 import com.example.api.navigation.HomeFeatureEntry
 import com.example.api.navigation.SettingFeatureEntry
-import com.example.impl.HomeFeatureEntryImpl
-import com.example.impl.SettingFeatureEntryImpl
 import javax.inject.Inject
+import javax.inject.Singleton
 
-interface TabFeatureProvider {
-    fun provideSettingFeature(): SettingFeatureEntry
-    fun provideHomeFeatureEntry(): HomeFeatureEntry
 
-    class Base @Inject constructor(): TabFeatureProvider{
-        override fun provideSettingFeature(): SettingFeatureEntry {
-            return SettingFeatureEntryImpl()
-        }
-
-        override fun provideHomeFeatureEntry(): HomeFeatureEntry {
-            return HomeFeatureEntryImpl()
-        }
-    }
-}
+@Singleton
+class FeatureEntryProvider @Inject constructor(
+     val editorEntry: EditorFeatureEntry,
+     val settingsEntry: SettingFeatureEntry,
+     val homeEntry: HomeFeatureEntry
+)

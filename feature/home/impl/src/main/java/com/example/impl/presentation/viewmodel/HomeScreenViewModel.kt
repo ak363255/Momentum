@@ -8,6 +8,7 @@
 
 package com.example.impl.presentation.viewmodel
 
+import com.example.api.navigation.EditorFeatureEntry
 import com.example.impl.presentation.viewmodel.contract.HomeAction
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
 import com.example.impl.presentation.viewmodel.contract.HomeEffectCommunicator
@@ -29,7 +30,8 @@ internal class HomeScreenViewModel @Inject constructor(
     private val scheduleWorkProcessor: ScheduleWorkProcessor,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val homeEffectCommunicator: HomeEffectCommunicator,
-    private val homeStatCommunicator: HomeStateCommunicator
+    private val homeStatCommunicator: HomeStateCommunicator,
+    private val editorFeatureEntry: EditorFeatureEntry
 ) : BaseViewModel<HomeEvent, HomeAction, HomeEffect, HomeState>(
     dispatcher = ioDispatcher,
     effectCommunicator = homeEffectCommunicator,
@@ -56,7 +58,11 @@ internal class HomeScreenViewModel @Inject constructor(
             }
 
             is HomeAction.UpdateSchedule -> {
-                currentState
+                currentState.copy(
+                    currentDate = action.timeTaskUi.date,
+                    timeTask = action.timeTaskUi.timeTasks,
+                    dailyTaskStatus = action.timeTaskUi.status,
+                )
             }
         }
     }
@@ -66,7 +72,14 @@ internal class HomeScreenViewModel @Inject constructor(
     ) {
         when(event){
             is HomeEvent.ChangeTaskDoneUi -> {}
-            HomeEvent.CreateSchedule -> {}
+            HomeEvent.CreateSchedule -> {
+                val currentDate = state().currentDate
+                if(currentDate != null){
+                    val command = ScheduleWorkCommand.CreateSchedule(currentDate)
+                    scheduleWorkProcessor.doWork(command).collectAndHandleWork()
+                }
+
+            }
             HomeEvent.Init -> {}
             is HomeEvent.LoadSchedule -> {
                 scheduleWorkProcessor.doWork(ScheduleWorkCommand.LoadScheduleByDate(event.date)).collectAndHandleWork()
