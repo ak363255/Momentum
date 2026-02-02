@@ -14,22 +14,21 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.module_injector.navigation.NavigableRoutes
-import com.example.module_injector.navigation.smartNavigateTo
+import com.example.momentum.di.modules.FeatureEntryProvider
 import com.example.momentum.di.modules.LocalTabNavigator
-import com.example.momentum.di.modules.TabFeatureProvider
 import com.example.momentum.di.modules.TabNavigator
-import com.example.momentum.presentation.ui.MainNavGraph
+import com.example.momentum.presentation.ui.MainTabNavGraph
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEffect
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEvent
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
+import com.example.momentum.routes.AppRoutes
 import com.example.utils.managers.rememberDrawerManager
 import com.example.utils.platform.screen.ScreenContent
 
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
-    tabFeatureProvider: TabFeatureProvider,
+    featureEntry: FeatureEntryProvider,
 ) {
     val tabScreenViewModel: TabScreenViewModel = hiltViewModel()
     ScreenContent(contractProvider = tabScreenViewModel) { state ->
@@ -78,7 +77,7 @@ fun TabScreen(
                                 .padding(innerPadding)
                                 .fillMaxSize()
                         ) {
-                            MainNavGraph(tabFeatureProvider, navController)
+                            MainTabNavGraph(featureEntry, navController)
                         }
                     }
                 }
@@ -86,24 +85,12 @@ fun TabScreen(
         }
         collectEffect { effect ->
             when (effect) {
-                TabScreenEffect.ShowAnalyticsFeature -> {
-                    navController.smartNavigateTo(
-                        NavigableRoutes.AnalyticsPage,
-                        launchSingleTop = true
-                    )
-                }
-
-                TabScreenEffect.ShowCategoriesFeature -> navController.navigate(NavigableRoutes.CategoriesPage)
-                TabScreenEffect.ShowHomeFeature -> navController.navigate(NavigableRoutes.MainPage)
-                TabScreenEffect.ShowOverviewFeature -> {
-                    navController.smartNavigateTo(
-                        NavigableRoutes.OverviewPage,
-                        launchSingleTop = true
-                    )
-                }
-
-                TabScreenEffect.ShowSettingsFeature -> navController.navigate(NavigableRoutes.SettingsPage)
-                TabScreenEffect.ShowTemplateFeature -> navController.navigate(NavigableRoutes.TemplatePage)
+                TabScreenEffect.ShowAnalyticsFeature -> {}
+                TabScreenEffect.ShowCategoriesFeature -> {}
+                TabScreenEffect.ShowHomeFeature -> navController.navigate(FeatureRootRoute.HomeRootRoute)
+                TabScreenEffect.ShowOverviewFeature -> {}
+                TabScreenEffect.ShowSettingsFeature ->{navController.navigate(FeatureRootRoute.SettingRootRoute)}
+                TabScreenEffect.ShowTemplateFeature -> {}
             }
         }
     }

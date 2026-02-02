@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":core:ui"))
     implementation(project(":feature:home:api"))
+    implementation(project(":feature:editor:api"))
     implementation(project(":module-injector"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

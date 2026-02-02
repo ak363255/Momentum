@@ -1,6 +1,10 @@
 package com.example.impl.data.routes
 
 import com.example.module_injector.navigation.Navigable
+import kotlinx.serialization.Serializable
 
-data object NavigateToEditorMainPage : Navigable
 
+object EditorFeatureRoutes {
+    @Serializable
+    object EditorMainPage : Navigable
+}

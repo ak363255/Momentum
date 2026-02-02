@@ -1,32 +1,11 @@
-package com.example.module_injector.navigation
-
+import com.example.module_injector.navigation.Navigable
 import kotlinx.serialization.Serializable
 
-sealed class NavigableRoutes : Navigable {
-
+sealed class FeatureRootRoute : Navigable{
     @Serializable
-    data object AnalyticsPage : NavigableRoutes()
-
+    object HomeRootRoute : FeatureRootRoute()
     @Serializable
-    data object OverviewPage : NavigableRoutes()
-
+    object SettingRootRoute : FeatureRootRoute()
     @Serializable
-    data object SettingsPage : NavigableRoutes()
-
-    @Serializable
-    data object CategoriesPage : NavigableRoutes()
-
-    @Serializable
-    data object MainPage : NavigableRoutes()
-
-    @Serializable
-    data object TemplatePage : NavigableRoutes()
-
-    @Serializable
-    data object TabScreen : NavigableRoutes()
-
-    @Serializable
-    data object Root : NavigableRoutes()
-
-
+    object EditorRootRoute:FeatureRootRoute()
 }

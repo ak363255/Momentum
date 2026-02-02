@@ -4,6 +4,7 @@
 
 package com.example.impl.presentation.views
 
+import FeatureRootRoute
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,12 +30,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -43,15 +46,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
+import com.example.impl.common.HomePageRoutes
 import com.example.impl.presentation.theme.HomeTheme
 import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.impl.presentation.viewmodel.HomeScreenViewModel
 import com.example.impl.presentation.viewmodel.contract.HomeEvent
 import com.example.impl.presentation.viewmodel.contract.HomeState
-import com.example.module_injector.navigation.NavigableRoutes
+import com.example.module_injector.navigation.Navigable
 import com.example.module_injector.navigation.OnNavigateTo
+import com.example.ui.views.LocalRootNavigator
 import com.example.utils.extensions.shiftDay
 import com.example.utils.extensions.startThisDay
 import com.example.utils.managers.LocalDrawerManager
@@ -60,19 +65,35 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
 
-internal fun NavGraphBuilder.home(navHostController: NavHostController) {
-    composable<NavigableRoutes.MainPage> {
+internal fun NavGraphBuilder.home() {
+
+    composable<FeatureRootRoute.HomeRootRoute> {
+        val navHostController = LocalRootNavigator.current.provideRootNavHostController()
+        val onNavigateTo = remember {
+            object : OnNavigateTo{
+                override fun invoke(
+                    p1: Navigable,
+                    p2: NavOptionsBuilder.() -> Unit
+                ) {
+                    navHostController.navigate(p1,p2)
+                }
+            }
+        }
         val homeScreenViewmodel: HomeScreenViewModel = hiltViewModel()
-        HomeScreen(homeScreenViewModel = homeScreenViewmodel) { destination, navOption ->
-            navHostController.navigate(destination, navOption)
+        CompositionLocalProvider(LocalHomeNavigator provides onNavigateTo ) {
+            HomeScreen(homeScreenViewModel = homeScreenViewmodel)
         }
     }
+
 }
 
+val LocalHomeNavigator = staticCompositionLocalOf<OnNavigateTo> { throw IllegalStateException() }
+
 @Composable
-internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: OnNavigateTo) {
+internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
     ScreenContent(homeScreenViewModel) { homeState ->
         HomeTheme {
             val drawerManager = LocalDrawerManager.current
@@ -94,10 +115,12 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: 
                     modifier = Modifier
                         .padding(paddingValues)
                         .background(color = MaterialTheme.colorScheme.surface),
-                    onNavigateTo = onNavigateTo,
                     homeViewState = homeState,
                     onChangeDate = { date ->
                         homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))
+                    },
+                    onCreateSchedule = {
+                          homeScreenViewModel.dispatchEvent(HomeEvent.CreateSchedule)
                     }
                 )
             }
@@ -123,19 +146,17 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, onNavigateTo: 
 
 @Composable
 internal fun HomeContent(
-    onNavigateTo: OnNavigateTo,
     modifier: Modifier = Modifier,
     homeViewState: HomeState,
-    onChangeDate: (Date) -> Unit
+    onChangeDate: (Date) -> Unit,
+    onCreateSchedule: () -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(8.dp))
         DateChooserSection(homeState = homeViewState, onChangeDate = onChangeDate)
         ScheduleSection(
             homeViewState, modifier = Modifier,
-            onCreateSchedule = {
-
-            }
+            onCreateSchedule = onCreateSchedule
         )
     }
 

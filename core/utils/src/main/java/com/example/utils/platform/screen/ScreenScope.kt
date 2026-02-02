@@ -4,6 +4,7 @@
 
 package com.example.utils.platform.screen
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,7 +29,13 @@ interface ScreenScope<S,E,A,F> {
         }
 
         @Composable
-        override fun fetchState(): S  = contractProvider.fetchStateFlow().collectAsStateWithLifecycle().value
+        override fun fetchState(): S  {
+          val state = contractProvider.fetchStateFlow().collectAsStateWithLifecycle().value
+            LaunchedEffect(state) {
+                Log.d("State","changed ${state}")
+            }
+            return state
+        }
 
         @Composable
         override fun collectEffect(collector: FlowCollector<F>) {
