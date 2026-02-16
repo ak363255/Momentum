@@ -15,6 +15,4 @@ abstract class EditorFeatureEntry: AggregateFeatureEntry {
         get() = super.arguments
     override val deepLinks: List<NavDeepLink>
         get() = super.deepLinks
-
-   abstract fun navigateToEditorMainPage(param : Any? = null)
 }

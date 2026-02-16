@@ -20,20 +20,11 @@ import com.example.ui.views.LocalRootNavigator
 
 
 val LocalEditorNavigator = staticCompositionLocalOf<OnNavigateTo> { throw IllegalStateException() }
-internal fun NavGraphBuilder.editor() {
+internal fun NavGraphBuilder.editor(onNavigateTo: OnNavigateTo) {
     navigation<FeatureRootRoute.EditorRootRoute>(startDestination = EditorFeatureRoutes.EditorMainPage){
         composable<EditorFeatureRoutes.EditorMainPage> {
             val rootNavHostController = LocalRootNavigator.current.provideRootNavHostController()
-            val onNavigateTo = remember {
-                object : OnNavigateTo {
-                    override fun invoke(
-                        p1: Navigable,
-                        p2: NavOptionsBuilder.() -> Unit
-                    ) {
-                        rootNavHostController.navigate(p1, p2)
-                    }
-                }
-            }
+            val onNavigateTo = remember {onNavigateTo}
             CompositionLocalProvider(LocalEditorNavigator provides onNavigateTo) {
                 EditorScreen()
             }

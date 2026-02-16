@@ -28,7 +28,9 @@ fun MainScreen(featureEntry: FeatureEntryProvider) {
                 TabScreen(modifier = Modifier,featureEntry)
             }
             with(featureEntry.editorEntry){
-                navigate(navHostController = rootNavController)
+                navigate(navHostController = rootNavController){navigable,navOptionBuilder ->
+                    rootNavController.navigate(navigable,navOptionBuilder)
+                }
             }
         }
     }

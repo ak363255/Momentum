@@ -10,6 +10,7 @@ import com.example.api.navigation.HomeFeatureEntry
 import com.example.impl.common.HomePageRoutes
 import com.example.impl.presentation.views.home
 import com.example.module_injector.navigation.Navigable
+import com.example.module_injector.navigation.OnNavigateTo
 import javax.inject.Inject
 
 class HomeFeatureEntryImpl @Inject  constructor() : HomeFeatureEntry() {
@@ -19,8 +20,8 @@ class HomeFeatureEntryImpl @Inject  constructor() : HomeFeatureEntry() {
     override val featureRoute: Navigable
         get() = FeatureRootRoute.HomeRootRoute
 
-    override fun NavGraphBuilder.navigate(navHostController: NavHostController) {
+    override fun NavGraphBuilder.navigate(navHostController: NavHostController,onNavigateTo: OnNavigateTo) {
         this@HomeFeatureEntryImpl.navHostController = navHostController
-        home()
+        home(onNavigateTo)
     }
 }
