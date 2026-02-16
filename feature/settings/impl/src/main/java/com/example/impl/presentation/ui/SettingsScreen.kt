@@ -12,22 +12,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.impl.routes.SettingPageRoutes
-import com.example.module_injector.navigation.Navigable
 import com.example.module_injector.navigation.OnNavigateTo
-import com.example.ui.views.LocalRootNavigator
 
-internal fun NavGraphBuilder.settingsScreen() {
+internal fun NavGraphBuilder.settingsScreen(onNavigateTo: OnNavigateTo) {
     navigation<FeatureRootRoute.SettingRootRoute>(startDestination = SettingPageRoutes.SettingsMainPage) {
         composable<SettingPageRoutes.SettingsMainPage>(
         ) {
-            SettingsMainPage()
+            SettingsMainPage(onNavigateTo)
         }
         composable<SettingPageRoutes.SettingThemePage> {
-            SettingsThemePage()
+            SettingsThemePage(onNavigateTo)
         }
     }
 }
@@ -35,19 +32,8 @@ internal fun NavGraphBuilder.settingsScreen() {
 internal val LocalSettingsNavigator = compositionLocalOf<OnNavigateTo> { throw Exception("Error") }
 
 @Composable
-internal fun SettingsMainPage() {
-    val navHostController = LocalRootNavigator.current.provideRootNavHostController()
-    val onNavigateTo = remember {
-        object : OnNavigateTo {
-            override fun invoke(
-                p1: Navigable,
-                p2: NavOptionsBuilder.() -> Unit
-            ) {
-                navHostController.navigate(p1, p2)
-            }
-
-        }
-    }
+internal fun SettingsMainPage(onNavigateTo: OnNavigateTo) {
+    val onNavigateTo = remember { onNavigateTo }
     CompositionLocalProvider(LocalSettingsNavigator provides onNavigateTo) {
         Box(
             modifier = Modifier
@@ -62,19 +48,8 @@ internal fun SettingsMainPage() {
 }
 
 @Composable
-internal fun SettingsThemePage() {
-    val navHostController = LocalRootNavigator.current.provideRootNavHostController()
-    val onNavigateTo = remember {
-        object : OnNavigateTo {
-            override fun invoke(
-                p1: Navigable,
-                p2: NavOptionsBuilder.() -> Unit
-            ) {
-                navHostController.navigate(p1, p2)
-            }
-
-        }
-    }
+internal fun SettingsThemePage(onNavigateTo: OnNavigateTo) {
+    val onNavigateTo = remember {onNavigateTo}
     CompositionLocalProvider(LocalSettingsNavigator provides onNavigateTo) {
         Box(
             modifier = Modifier

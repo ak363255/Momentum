@@ -16,11 +16,14 @@ fun MainTabNavGraph(
         startDestination = FeatureRootRoute.HomeRootRoute
     ) {
         with(featureEntry.homeEntry) {
-            navigate(navController)
+            navigate(navController){navigable,navOptionBuilder ->
+                navController.navigate(navigable,navOptionBuilder)
+            }
         }
-
         with(featureEntry.settingsEntry) {
-            navigate(navController)
+            navigate(navController){navigable,navOptionBuilder ->
+                navController.navigate(navigable,navOptionBuilder)
+            }
         }
         // change below  ->navigate to actual feature screen using feature starter like settings feature
     }

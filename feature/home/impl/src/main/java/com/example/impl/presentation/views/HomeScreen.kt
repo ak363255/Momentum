@@ -68,20 +68,10 @@ import java.util.Locale
 import javax.inject.Inject
 
 
-internal fun NavGraphBuilder.home() {
+internal fun NavGraphBuilder.home(onNavigateTo: OnNavigateTo) {
 
     composable<FeatureRootRoute.HomeRootRoute> {
-        val navHostController = LocalRootNavigator.current.provideRootNavHostController()
-        val onNavigateTo = remember {
-            object : OnNavigateTo{
-                override fun invoke(
-                    p1: Navigable,
-                    p2: NavOptionsBuilder.() -> Unit
-                ) {
-                    navHostController.navigate(p1,p2)
-                }
-            }
-        }
+        val onNavigateTo = remember { onNavigateTo }
         val homeScreenViewmodel: HomeScreenViewModel = hiltViewModel()
         CompositionLocalProvider(LocalHomeNavigator provides onNavigateTo ) {
             HomeScreen(homeScreenViewModel = homeScreenViewmodel)

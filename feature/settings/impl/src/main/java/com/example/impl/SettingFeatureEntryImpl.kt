@@ -10,6 +10,7 @@ import com.example.api.navigation.SettingFeatureEntry
 import com.example.impl.presentation.ui.settingsScreen
 import com.example.impl.routes.SettingPageRoutes
 import com.example.module_injector.navigation.Navigable
+import com.example.module_injector.navigation.OnNavigateTo
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Inject
@@ -21,9 +22,9 @@ class SettingFeatureEntryImpl @Inject constructor(
 
     override val featureRoute: Navigable
         get() = FeatureRootRoute.SettingRootRoute
-    override fun NavGraphBuilder.navigate(navHostController: NavHostController) {
+    override fun NavGraphBuilder.navigate(navHostController: NavHostController,onNavigateTo: OnNavigateTo) {
         this@SettingFeatureEntryImpl.navHostController = navHostController
-       settingsScreen()
+       settingsScreen(onNavigateTo)
     }
 
 

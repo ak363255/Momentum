@@ -9,6 +9,7 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.example.module_injector.navigation.Navigable
+import com.example.module_injector.navigation.OnNavigateTo
 
 
 typealias Destinations = Map<Class<out FeatureEntry>, FeatureEntry>
@@ -25,7 +26,7 @@ interface FeatureEntry{
 }
 
 interface AggregateFeatureEntry: FeatureEntry{
-    fun NavGraphBuilder.navigate(navHostController: NavHostController)
+    fun NavGraphBuilder.navigate(navHostController: NavHostController,onNavigateTo: OnNavigateTo)
 }
 
 inline fun  <reified T: FeatureEntry>Destinations.find() : T = findOrNull() ?: error("Unable to find '${T::class.java}' destination.")

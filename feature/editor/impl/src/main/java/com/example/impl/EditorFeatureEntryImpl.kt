@@ -10,6 +10,7 @@ import com.example.api.navigation.EditorFeatureEntry
 import com.example.impl.data.routes.EditorFeatureRoutes
 import com.example.impl.presentation.editor
 import com.example.module_injector.navigation.Navigable
+import com.example.module_injector.navigation.OnNavigateTo
 import javax.inject.Inject
 
 class EditorFeatureEntryImpl @Inject constructor() : EditorFeatureEntry() {
@@ -17,12 +18,8 @@ class EditorFeatureEntryImpl @Inject constructor() : EditorFeatureEntry() {
     override val featureRoute: Navigable
         get() = FeatureRootRoute.EditorRootRoute
 
-    override fun NavGraphBuilder.navigate(navHostController: NavHostController) {
+    override fun NavGraphBuilder.navigate(navHostController: NavHostController,onNavigateTo: OnNavigateTo) {
         this@EditorFeatureEntryImpl.navHostController = navHostController
-        editor()
-    }
-
-    override fun navigateToEditorMainPage(param: Any?) {
-        navHostController.navigate(EditorFeatureRoutes.EditorMainPage)
+        editor(onNavigateTo)
     }
 }
