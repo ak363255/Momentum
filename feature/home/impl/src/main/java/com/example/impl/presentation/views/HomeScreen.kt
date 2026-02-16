@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -46,17 +48,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import com.example.impl.common.HomePageRoutes
 import com.example.impl.presentation.theme.HomeTheme
 import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.impl.presentation.viewmodel.HomeScreenViewModel
 import com.example.impl.presentation.viewmodel.contract.HomeEvent
 import com.example.impl.presentation.viewmodel.contract.HomeState
-import com.example.module_injector.navigation.Navigable
 import com.example.module_injector.navigation.OnNavigateTo
-import com.example.ui.views.LocalRootNavigator
+import com.example.utils.extensions.endThisDay
 import com.example.utils.extensions.shiftDay
 import com.example.utils.extensions.startThisDay
 import com.example.utils.managers.LocalDrawerManager
@@ -65,7 +64,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 
 
 internal fun NavGraphBuilder.home(onNavigateTo: OnNavigateTo) {
@@ -144,6 +142,7 @@ internal fun HomeContent(
     Column(modifier = modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(8.dp))
         DateChooserSection(homeState = homeViewState, onChangeDate = onChangeDate)
+        Spacer(modifier = Modifier.height(8.dp))
         ScheduleSection(
             homeViewState, modifier = Modifier,
             onCreateSchedule = onCreateSchedule
@@ -277,15 +276,31 @@ internal fun ScheduleSection(homeState: HomeState, modifier: Modifier = Modifier
 
 @Composable
 internal fun HomeScheduleList(homeState: HomeState) {
-    if (homeState.timeTask.isNotEmpty()) {
+    if(homeState.dailyTaskStatus != null){
+        LazyColumn {
+            items(items = homeState.timeTask){
 
+            }
+            item {
+                val startTime = when(homeState.timeTask.isEmpty()){
+                    true -> homeState.currentDate!!
+                    false -> homeState.timeTask.last().endTime
+                }
+                val endTime = startTime.endThisDay()
+                AddTimeTaskViewItem(
+                    startTime = startTime,
+                    endTime = endTime,
+                )
+
+            }
+        }
     }
 }
 
 
 @Composable
 internal fun HomeEmptyScheduleView(homeState: HomeState, modifier: Modifier = Modifier,onCreateSchedule: () -> Unit) {
-    if (homeState.timeTask.isEmpty()) {
+    if (homeState.dailyTaskStatus == null) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

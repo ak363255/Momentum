@@ -9,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.example.impl"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -36,6 +36,10 @@ android {
             // We parse the string from your libs.versions to the required JvmTarget type
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
         }    }
+
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -91,4 +95,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.constraintlayout.compose)
 }
