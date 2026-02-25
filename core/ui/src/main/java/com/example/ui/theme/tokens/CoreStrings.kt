@@ -18,4 +18,7 @@ interface CoreStrings {
 
     val confirmTitle : String
     val cancelTitle : String
+
+    val minuteSymbol : String
+    val hourSymbol : String
 }

@@ -228,6 +228,7 @@ fun Long.toMinutesOrHoursString(minutesSymbol: String, hoursSymbol: String): Str
     }
 }
 
+
 fun Long.toMinutesAndHoursString(minutesSymbol: String, hoursSymbol: String): String {
     val minutes = this.toMinutes()
     val hours = this.toHorses()

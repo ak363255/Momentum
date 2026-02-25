@@ -33,4 +33,8 @@ object HindiLanguage : CoreStrings {
 
     override val cancelTitle: String
         get() = "रद्द"
+    override val minuteSymbol: String
+        get() = "m"
+    override val hourSymbol: String
+        get() = "h"
 }
