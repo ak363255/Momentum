@@ -281,7 +281,8 @@ internal fun HomeScheduleList(homeState: HomeState) {
             items(items = homeState.timeTask){
 
             }
-            item {
+            item{
+                 Spacer(modifier = Modifier.height(12.dp))
                 val startTime = when(homeState.timeTask.isEmpty()){
                     true -> homeState.currentDate!!
                     false -> homeState.timeTask.last().endTime

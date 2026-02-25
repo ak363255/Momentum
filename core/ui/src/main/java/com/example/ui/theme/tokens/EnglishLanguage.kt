@@ -29,4 +29,8 @@ object EnglishLanguage : CoreStrings{
         get() = "Select"
     override val cancelTitle: String
         get() = "Cancel"
+    override val minuteSymbol: String
+        get() = "m"
+    override val hourSymbol: String
+        get() = "h"
 }
