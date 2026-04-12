@@ -52,6 +52,7 @@ import androidx.navigation.compose.composable
 import com.example.impl.presentation.theme.HomeTheme
 import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.impl.presentation.viewmodel.HomeScreenViewModel
+import com.example.impl.presentation.viewmodel.contract.HomeEffect
 import com.example.impl.presentation.viewmodel.contract.HomeEvent
 import com.example.impl.presentation.viewmodel.contract.HomeState
 import com.example.module_injector.navigation.OnNavigateTo
@@ -83,6 +84,7 @@ val LocalHomeNavigator = staticCompositionLocalOf<OnNavigateTo> { throw IllegalS
 @Composable
 internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
     ScreenContent(homeScreenViewModel) { homeState ->
+        val onNavigateTo = LocalHomeNavigator.current
         HomeTheme {
             val drawerManager = LocalDrawerManager.current
             val scope = rememberCoroutineScope()
@@ -104,11 +106,10 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
                         .padding(paddingValues)
                         .background(color = MaterialTheme.colorScheme.surface),
                     homeViewState = homeState,
-                    onChangeDate = { date ->
-                        homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))
-                    },
-                    onCreateSchedule = {
-                          homeScreenViewModel.dispatchEvent(HomeEvent.CreateSchedule)
+                    onChangeDate = { date -> homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))},
+                    onCreateSchedule = { homeScreenViewModel.dispatchEvent(HomeEvent.CreateSchedule)},
+                    onAddTimeTask = {startDate,endDate ->
+                        dispatchEvent(HomeEvent.PressAddTimeTaskButton(startDate,endDate))
                     }
                 )
             }
@@ -127,6 +128,16 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
         LaunchedEffect(Unit) {
             dispatchEvent(HomeEvent.LoadSchedule(homeState.currentDate))
         }
+        collectEffect { effect ->
+            when(effect){
+                is HomeEffect.ShowError -> {}
+                is HomeEffect.NavigateToEditor -> {
+                    onNavigateTo(FeatureRootRoute.EditorRootRoute){
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
     }
 
 
@@ -137,7 +148,8 @@ internal fun HomeContent(
     modifier: Modifier = Modifier,
     homeViewState: HomeState,
     onChangeDate: (Date) -> Unit,
-    onCreateSchedule: () -> Unit
+    onCreateSchedule: () -> Unit,
+    onAddTimeTask : (startDate : Date,endDate : Date) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -145,7 +157,8 @@ internal fun HomeContent(
         Spacer(modifier = Modifier.height(8.dp))
         ScheduleSection(
             homeViewState, modifier = Modifier,
-            onCreateSchedule = onCreateSchedule
+            onCreateSchedule = onCreateSchedule,
+            onAddTimeTask = onAddTimeTask
         )
     }
 
@@ -266,16 +279,20 @@ internal fun DateChooserSection(homeState: HomeState, onChangeDate: (Date) -> Un
 }
 
 @Composable
-internal fun ScheduleSection(homeState: HomeState, modifier: Modifier = Modifier,onCreateSchedule: () -> Unit) {
+internal fun ScheduleSection(
+    homeState: HomeState,
+    modifier: Modifier = Modifier,onCreateSchedule: () -> Unit,
+    onAddTimeTask : (startData: Date,endDate : Date)-> Unit
+) {
     Box(modifier = modifier.fillMaxSize()) {
-        HomeScheduleList(homeState)
+        HomeScheduleList(homeState,onAddTimeTask)
         HomeEmptyScheduleView(homeState,onCreateSchedule = onCreateSchedule)
     }
 
 }
 
 @Composable
-internal fun HomeScheduleList(homeState: HomeState) {
+internal fun HomeScheduleList(homeState: HomeState,onAddTimeTask : (startTime:Date,endTime:Date)-> Unit) {
     if(homeState.dailyTaskStatus != null){
         LazyColumn {
             items(items = homeState.timeTask){
@@ -291,6 +308,7 @@ internal fun HomeScheduleList(homeState: HomeState) {
                 AddTimeTaskViewItem(
                     startTime = startTime,
                     endTime = endTime,
+                    onAddTimeTask = onAddTimeTask
                 )
 
             }

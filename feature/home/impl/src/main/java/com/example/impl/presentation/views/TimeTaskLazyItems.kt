@@ -7,6 +7,7 @@ package com.example.impl.presentation.views
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.ui.views.toMinutesOrHourTitle
 import com.example.utils.extensions.duration
-import com.example.utils.extensions.toMinutesOrHoursString
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -41,7 +41,8 @@ import java.util.Locale
 @Composable
 fun AddTimeTaskViewItem(
     startTime: Date,
-    endTime: Date
+    endTime: Date,
+    onAddTimeTask : (startTime:Date,endTime: Date)-> Unit
 ) {
 
     ConstraintLayout(
@@ -79,6 +80,9 @@ fun AddTimeTaskViewItem(
                                 color = MaterialTheme.colorScheme.surfaceVariant
                             ), shape = RoundedCornerShape(size = 12.dp)
                         )
+                        .clickable{
+                            onAddTimeTask(startTime,endTime)
+                        }
                         .background(color = MaterialTheme.colorScheme.surface)
                         .padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -109,5 +113,5 @@ fun StartTimeTaskTitle(startTime : Date){
 @Composable
 @Preview
 fun PreviewAddTimeTaskViewItem() {
-    AddTimeTaskViewItem(startTime = Date(), endTime = Date())
+    AddTimeTaskViewItem(startTime = Date(), endTime = Date()){startDate,endDate ->}
 }
