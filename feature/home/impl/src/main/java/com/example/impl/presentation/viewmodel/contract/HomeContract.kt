@@ -43,7 +43,7 @@ internal sealed class HomeAction : BaseAction {
 
 internal sealed class HomeEffect : BaseEffect {
     data class ShowError(val homeFailures: HomeFailures) : HomeEffect()
-
+    data class NavigateToEditor(val startTime: Date,val endTime: Date) : HomeEffect()
 }
 
 internal data class HomeState(

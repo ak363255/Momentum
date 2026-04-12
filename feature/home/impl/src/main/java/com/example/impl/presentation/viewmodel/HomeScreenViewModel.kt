@@ -80,11 +80,15 @@ internal class HomeScreenViewModel @Inject constructor(
                 }
 
             }
-            HomeEvent.Init -> {}
+            HomeEvent.Init -> {
+
+            }
             is HomeEvent.LoadSchedule -> {
                 scheduleWorkProcessor.doWork(ScheduleWorkCommand.LoadScheduleByDate(event.date)).collectAndHandleWork()
             }
-            is HomeEvent.PressAddTimeTaskButton -> {}
+            is HomeEvent.PressAddTimeTaskButton -> {
+                   
+            }
             is HomeEvent.PressEditTimeTaskButton -> {}
             HomeEvent.PressViewToggleButton -> {}
             HomeEvent.PressedOverviewButton -> {}
