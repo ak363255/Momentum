@@ -16,6 +16,7 @@ import javax.inject.Inject
 /*
     this should be in feature branch
  */
+private val featureNewLetterChanges = 0L
 
  class EditorFeatureEntryImpl @Inject constructor() : EditorFeatureEntry() {
     private lateinit var  navHostController: NavHostController
