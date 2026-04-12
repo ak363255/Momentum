@@ -13,6 +13,10 @@ import com.example.module_injector.navigation.Navigable
 import com.example.module_injector.navigation.OnNavigateTo
 import javax.inject.Inject
 
+/*
+    this should be in feature branch
+ */
+
  class EditorFeatureEntryImpl @Inject constructor() : EditorFeatureEntry() {
     private lateinit var  navHostController: NavHostController
     override val featureRoute: Navigable
