@@ -24,6 +24,9 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/home/api" />
             <option value="$PROJECT_DIR$/feature/home/impl" />
+            <option value="$PROJECT_DIR$/feature/qrscan" />
+            <option value="$PROJECT_DIR$/feature/qrscan/api" />
+            <option value="$PROJECT_DIR$/feature/qrscan/impl" />
             <option value="$PROJECT_DIR$/feature/settings" />
             <option value="$PROJECT_DIR$/feature/settings/api" />
             <option value="$PROJECT_DIR$/feature/settings/impl" />

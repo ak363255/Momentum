@@ -4,29 +4,15 @@
 
 package com.example.module_injector
 
-import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.example.module_injector.navigation.Navigable
-import com.example.module_injector.navigation.OnNavigateTo
 
 
 typealias Destinations = Map<Class<out FeatureEntry>, FeatureEntry>
 
-interface FeatureEntry{
-
-    val featureRoute : Navigable
-
-    val arguments : List<NamedNavArgument>
-        get() = emptyList()
-
-    val deepLinks : List<NavDeepLink>
-        get() = emptyList()
-}
+interface FeatureEntry
 
 interface AggregateFeatureEntry: FeatureEntry{
-    fun NavGraphBuilder.navigate(navHostController: NavHostController,onNavigateTo: OnNavigateTo)
+    fun NavGraphBuilder.navigate()
 }
 
 inline fun  <reified T: FeatureEntry>Destinations.find() : T = findOrNull() ?: error("Unable to find '${T::class.java}' destination.")

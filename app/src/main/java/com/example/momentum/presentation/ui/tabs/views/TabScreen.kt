@@ -14,28 +14,30 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.module_injector.navigation.NavigationManager
 import com.example.momentum.di.modules.FeatureEntryProvider
 import com.example.momentum.di.modules.LocalTabNavigator
 import com.example.momentum.di.modules.TabNavigator
 import com.example.momentum.presentation.ui.MainTabNavGraph
-import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEffect
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenEvent
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
-import com.example.momentum.routes.AppRoutes
 import com.example.utils.managers.rememberDrawerManager
 import com.example.utils.platform.screen.ScreenContent
+
 
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
     featureEntry: FeatureEntryProvider,
+    navigationManager: NavigationManager,
 ) {
+    val rootNavController = rememberNavController()
     val tabScreenViewModel: TabScreenViewModel = hiltViewModel()
     ScreenContent(contractProvider = tabScreenViewModel) { state ->
         val navController = rememberNavController()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val drawerManager = rememberDrawerManager(drawerState)
-        val tabNavigator = TabNavigator.Base(navController)
+        val tabNavigator = TabNavigator.Base(rootNavController)
         CompositionLocalProvider(
             LocalTabNavigator provides tabNavigator
         ) {
@@ -77,21 +79,14 @@ fun TabScreen(
                                 .padding(innerPadding)
                                 .fillMaxSize()
                         ) {
-                            MainTabNavGraph(featureEntry, navController)
+                            MainTabNavGraph(featureEntry,navController,navigationManager)
                         }
                     }
                 }
             )
         }
         collectEffect { effect ->
-            when (effect) {
-                TabScreenEffect.ShowAnalyticsFeature -> {}
-                TabScreenEffect.ShowCategoriesFeature -> {}
-                TabScreenEffect.ShowHomeFeature -> navController.navigate(FeatureRootRoute.HomeRootRoute)
-                TabScreenEffect.ShowOverviewFeature -> {}
-                TabScreenEffect.ShowSettingsFeature ->{navController.navigate(FeatureRootRoute.SettingRootRoute)}
-                TabScreenEffect.ShowTemplateFeature -> {}
-            }
+
         }
     }
 

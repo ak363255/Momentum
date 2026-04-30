@@ -4,7 +4,6 @@
 
 package com.example.impl.presentation.views
 
-import FeatureRootRoute
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,14 +31,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -49,13 +46,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.example.impl.navigation.HomeFeatureRoutes
 import com.example.impl.presentation.theme.HomeTheme
 import com.example.impl.presentation.theme.token.LocalHomeStrings
 import com.example.impl.presentation.viewmodel.HomeScreenViewModel
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
 import com.example.impl.presentation.viewmodel.contract.HomeEvent
 import com.example.impl.presentation.viewmodel.contract.HomeState
-import com.example.module_injector.navigation.OnNavigateTo
+import com.example.module_injector.FeatureRootRoutes
 import com.example.utils.extensions.endThisDay
 import com.example.utils.extensions.shiftDay
 import com.example.utils.extensions.startThisDay
@@ -67,24 +66,20 @@ import java.util.Date
 import java.util.Locale
 
 
-internal fun NavGraphBuilder.home(onNavigateTo: OnNavigateTo) {
-
-    composable<FeatureRootRoute.HomeRootRoute> {
-        val onNavigateTo = remember { onNavigateTo }
-        val homeScreenViewmodel: HomeScreenViewModel = hiltViewModel()
-        CompositionLocalProvider(LocalHomeNavigator provides onNavigateTo ) {
+internal fun NavGraphBuilder.home() {
+    navigation<FeatureRootRoutes.HomeFeatureRootRoute>(startDestination = HomeFeatureRoutes.HomeRoute){
+        composable<HomeFeatureRoutes.HomeRoute> {
+            val homeScreenViewmodel: HomeScreenViewModel = hiltViewModel()
             HomeScreen(homeScreenViewModel = homeScreenViewmodel)
         }
     }
 
 }
 
-val LocalHomeNavigator = staticCompositionLocalOf<OnNavigateTo> { throw IllegalStateException() }
 
 @Composable
 internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
     ScreenContent(homeScreenViewModel) { homeState ->
-        val onNavigateTo = LocalHomeNavigator.current
         HomeTheme {
             val drawerManager = LocalDrawerManager.current
             val scope = rememberCoroutineScope()
@@ -106,10 +101,16 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
                         .padding(paddingValues)
                         .background(color = MaterialTheme.colorScheme.surface),
                     homeViewState = homeState,
-                    onChangeDate = { date -> homeScreenViewModel.dispatchEvent(HomeEvent.LoadSchedule(date.startThisDay()))},
-                    onCreateSchedule = { homeScreenViewModel.dispatchEvent(HomeEvent.CreateSchedule)},
-                    onAddTimeTask = {startDate,endDate ->
-                        dispatchEvent(HomeEvent.PressAddTimeTaskButton(startDate,endDate))
+                    onChangeDate = { date ->
+                        homeScreenViewModel.dispatchEvent(
+                            HomeEvent.LoadSchedule(
+                                date.startThisDay()
+                            )
+                        )
+                    },
+                    onCreateSchedule = { homeScreenViewModel.dispatchEvent(HomeEvent.CreateSchedule) },
+                    onAddTimeTask = { startDate, endDate ->
+                        dispatchEvent(HomeEvent.PressAddTimeTaskButton(startDate, endDate))
                     }
                 )
             }
@@ -129,12 +130,9 @@ internal fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
             dispatchEvent(HomeEvent.LoadSchedule(homeState.currentDate))
         }
         collectEffect { effect ->
-            when(effect){
+            when (effect) {
                 is HomeEffect.ShowError -> {}
                 is HomeEffect.NavigateToEditor -> {
-                    onNavigateTo(FeatureRootRoute.EditorRootRoute){
-                        launchSingleTop = true
-                    }
                 }
             }
         }
@@ -149,7 +147,7 @@ internal fun HomeContent(
     homeViewState: HomeState,
     onChangeDate: (Date) -> Unit,
     onCreateSchedule: () -> Unit,
-    onAddTimeTask : (startDate : Date,endDate : Date) -> Unit
+    onAddTimeTask: (startDate: Date, endDate: Date) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -281,26 +279,29 @@ internal fun DateChooserSection(homeState: HomeState, onChangeDate: (Date) -> Un
 @Composable
 internal fun ScheduleSection(
     homeState: HomeState,
-    modifier: Modifier = Modifier,onCreateSchedule: () -> Unit,
-    onAddTimeTask : (startData: Date,endDate : Date)-> Unit
+    modifier: Modifier = Modifier, onCreateSchedule: () -> Unit,
+    onAddTimeTask: (startData: Date, endDate: Date) -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize()) {
-        HomeScheduleList(homeState,onAddTimeTask)
-        HomeEmptyScheduleView(homeState,onCreateSchedule = onCreateSchedule)
+        HomeScheduleList(homeState, onAddTimeTask)
+        HomeEmptyScheduleView(homeState, onCreateSchedule = onCreateSchedule)
     }
 
 }
 
 @Composable
-internal fun HomeScheduleList(homeState: HomeState,onAddTimeTask : (startTime:Date,endTime:Date)-> Unit) {
-    if(homeState.dailyTaskStatus != null){
+internal fun HomeScheduleList(
+    homeState: HomeState,
+    onAddTimeTask: (startTime: Date, endTime: Date) -> Unit
+) {
+    if (homeState.dailyTaskStatus != null) {
         LazyColumn {
-            items(items = homeState.timeTask){
+            items(items = homeState.timeTask) {
 
             }
-            item{
-                 Spacer(modifier = Modifier.height(12.dp))
-                val startTime = when(homeState.timeTask.isEmpty()){
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+                val startTime = when (homeState.timeTask.isEmpty()) {
                     true -> homeState.currentDate!!
                     false -> homeState.timeTask.last().endTime
                 }
@@ -318,21 +319,29 @@ internal fun HomeScheduleList(homeState: HomeState,onAddTimeTask : (startTime:Da
 
 
 @Composable
-internal fun HomeEmptyScheduleView(homeState: HomeState, modifier: Modifier = Modifier,onCreateSchedule: () -> Unit) {
+internal fun HomeEmptyScheduleView(
+    homeState: HomeState,
+    modifier: Modifier = Modifier,
+    onCreateSchedule: () -> Unit
+) {
     if (homeState.dailyTaskStatus == null) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             val homeStringRes = LocalHomeStrings.current
-            EmptyScheduleView(emptyTitle = homeStringRes.emptyScheduleTitle, ctaText = homeStringRes.createScheduleTitle,onCreateSchedule)
+            EmptyScheduleView(
+                emptyTitle = homeStringRes.emptyScheduleTitle,
+                ctaText = homeStringRes.createScheduleTitle,
+                onCreateSchedule
+            )
         }
 
     }
 }
 
 @Composable
-fun EmptyScheduleView(emptyTitle: String, ctaText: String,onCreateSchedule : ()-> Unit) {
+fun EmptyScheduleView(emptyTitle: String, ctaText: String, onCreateSchedule: () -> Unit) {
     Column(
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -349,9 +358,10 @@ fun EmptyScheduleView(emptyTitle: String, ctaText: String,onCreateSchedule : ()-
             text = emptyTitle,
             modifier = Modifier,
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+        )
         Spacer(Modifier.height(12.dp))
-        SchedulePlanCta(modifier = Modifier, ctaText,onCreateSchedule)
+        SchedulePlanCta(modifier = Modifier, ctaText, onCreateSchedule)
     }
 }
 
@@ -361,7 +371,11 @@ internal fun SchedulePlanCta(modifier: Modifier, ctaText: String, onCreateSchedu
         modifier = modifier
             .noRippleClickable(onClick = onCreateSchedule)
             .padding(horizontal = 48.dp)
-            .border(width = 1.dp,color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), shape = RoundedCornerShape(percent = 50))
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                shape = RoundedCornerShape(percent = 50)
+            )
             .padding(horizontal = 32.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

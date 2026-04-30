@@ -4,6 +4,8 @@
 
 package com.example.momentum.presentation.ui.tabs.viewmodel
 
+import com.example.api.navigation.HomeFeatureApi
+import com.example.api.navigation.HomeFeatureStarterApi
 import com.example.momentum.presentation.ui.tabs.views.TabBottomBarItems
 import com.example.utils.di.annotations.IoDispatcher
 import com.example.utils.platform.viemodel.BaseViewModel
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class TabScreenViewModel @Inject constructor(
     tabStateCommunicator: TabStateCommunicator,
     tabEffectCommunicator: TabEffectCommunicator,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
+    @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    private val homeFeatureApi: HomeFeatureApi
 ) : BaseViewModel<TabScreenEvent, TabScreenActions, TabScreenEffect, TabViewState>(
     dispatcher = ioDispatcher,
     effectCommunicator = tabEffectCommunicator,
@@ -38,31 +41,31 @@ class TabScreenViewModel @Inject constructor(
     ) {
         when (event) {
             TabScreenEvent.SelectMainScreen -> navigate(TabScreenActions.NavigateToHomeTab) {
-                onAction(TabScreenEffect.ShowHomeFeature)
+               homeFeatureApi.getHomeFeatureStarter().navigateToHomeScreen()
             }
 
             TabScreenEvent.SelectedAnalyticsTab -> navigate(TabScreenActions.NavigateToAnalyticsTab) {
-                onAction(TabScreenEffect.ShowAnalyticsFeature)
+
             }
 
             TabScreenEvent.SelectedCategories -> navigate(TabScreenActions.NavigateToHomeTab) {
-                onAction(TabScreenEffect.ShowCategoriesFeature)
+
             }
 
             TabScreenEvent.SelectedHomeTab -> navigate(TabScreenActions.NavigateToHomeTab) {
-                onAction(TabScreenEffect.ShowHomeFeature)
+
             }
 
             TabScreenEvent.SelectedOverviewScreen -> navigate(TabScreenActions.NavigateToHomeTab) {
-                onAction(TabScreenEffect.ShowOverviewFeature)
+
             }
 
             TabScreenEvent.SelectedSettingTab -> navigate(TabScreenActions.NavigateToSettingsTab) {
-                onAction(TabScreenEffect.ShowSettingsFeature)
+
             }
 
             TabScreenEvent.SelectedTemplateScreen -> navigate(TabScreenActions.NavigateToHomeTab) {
-                onAction(TabScreenEffect.ShowTemplateFeature)
+
             }
         }
 

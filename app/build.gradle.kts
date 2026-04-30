@@ -60,6 +60,9 @@ dependencies {
     implementation(project(":feature:home:api"))
     implementation(project(":module-injector"))
 
+    implementation(project(":feature:qrscan:api"))
+    implementation(project(":feature:qrscan:impl"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

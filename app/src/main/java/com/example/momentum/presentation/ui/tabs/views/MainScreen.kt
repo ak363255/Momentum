@@ -5,33 +5,30 @@
 package com.example.momentum.presentation.ui.tabs.views
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.module_injector.navigation.NavigationManager
+import com.example.momentum.Navigator
 import com.example.momentum.di.modules.FeatureEntryProvider
-import com.example.momentum.di.modules.RootNavigatorBase
 import com.example.momentum.routes.AppRoutes
-import com.example.ui.views.LocalRootNavigator
 
 @Composable
-fun MainScreen(featureEntry: FeatureEntryProvider) {
-    val rootNavController = rememberNavController()
-    val rootNavigator = remember { RootNavigatorBase(rootNavController) }
-    CompositionLocalProvider(
-        LocalRootNavigator provides rootNavigator
-    ) {
-        NavHost(navController = rootNavController, startDestination = AppRoutes.AppRootRoutes){
-            composable<AppRoutes.AppRootRoutes> {
-                TabScreen(modifier = Modifier,featureEntry)
-            }
-            with(featureEntry.editorEntry){
-                navigate(navHostController = rootNavController){navigable,navOptionBuilder ->
-                    rootNavController.navigate(navigable,navOptionBuilder)
-                }
-            }
-        }
+fun MainScreen(featureEntry: FeatureEntryProvider, navigationManager: NavigationManager) {
+    TabScreen(modifier = Modifier, featureEntry,navigationManager)
+}
+
+@Composable
+fun rememberNavigator(
+    navController: NavController,
+    navigationManager: NavigationManager
+): Navigator {
+    val lifeCycleOwner = LocalLifecycleOwner.current
+    return remember {
+        Navigator(lifeCycleOwner, navController, navigationManager)
     }
 }

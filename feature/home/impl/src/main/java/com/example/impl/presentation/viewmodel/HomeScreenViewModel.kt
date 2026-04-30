@@ -8,6 +8,7 @@
 
 package com.example.impl.presentation.viewmodel
 
+import com.example.api.di.QrScanApi
 import com.example.api.navigation.EditorFeatureEntry
 import com.example.impl.presentation.viewmodel.contract.HomeAction
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
@@ -17,6 +18,7 @@ import com.example.impl.presentation.viewmodel.contract.HomeState
 import com.example.impl.presentation.viewmodel.contract.HomeStateCommunicator
 import com.example.impl.presentation.viewmodel.processor.ScheduleWorkCommand
 import com.example.impl.presentation.viewmodel.processor.ScheduleWorkProcessor
+import com.example.module_injector.navigation.NavigationManager
 import com.example.utils.di.annotations.IoDispatcher
 import com.example.utils.platform.viemodel.BaseViewModel
 import com.example.utils.platform.viemodel.work.WorkScope
@@ -31,7 +33,9 @@ internal class HomeScreenViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val homeEffectCommunicator: HomeEffectCommunicator,
     private val homeStatCommunicator: HomeStateCommunicator,
-    private val editorFeatureEntry: EditorFeatureEntry
+    private val editorFeatureEntry: EditorFeatureEntry,
+    private val navigationManager: NavigationManager,
+    private val qrScanApi: QrScanApi
 ) : BaseViewModel<HomeEvent, HomeAction, HomeEffect, HomeState>(
     dispatcher = ioDispatcher,
     effectCommunicator = homeEffectCommunicator,
@@ -87,7 +91,8 @@ internal class HomeScreenViewModel @Inject constructor(
                 scheduleWorkProcessor.doWork(ScheduleWorkCommand.LoadScheduleByDate(event.date)).collectAndHandleWork()
             }
             is HomeEvent.PressAddTimeTaskButton -> {
-                   
+                //navigationManager.navigate(FeatureRootRoute.EditorRootRoute(),null)
+                qrScanApi.fetchQrScanStarter().navigateToQrScan()
             }
             is HomeEvent.PressEditTimeTaskButton -> {}
             HomeEvent.PressViewToggleButton -> {}

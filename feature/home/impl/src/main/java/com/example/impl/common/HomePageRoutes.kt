@@ -6,5 +6,8 @@ import kotlinx.serialization.Serializable
 internal object HomePageRoutes {
 
    @Serializable
-   internal object HomeMainPage : Navigable
+   internal object HomeMainPage : Navigable{
+      override val route: String
+         get() = this.javaClass.simpleName
+   }
 }

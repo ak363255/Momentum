@@ -15,24 +15,26 @@ import com.example.utils.platform.viemodel.contract.BaseViewState
 import com.example.utils.platform.viemodel.contract.ContractProvider
 import kotlinx.coroutines.flow.FlowCollector
 
-interface ScreenScope<S,E,A,F> {
-    fun dispatchEvent(event : E)
-    @Composable
-    fun fetchState():S
-    @Composable fun collectEffect(collector : FlowCollector<F>)
+interface ScreenScope<S, E, A, F> {
+    fun dispatchEvent(event: E)
 
-    class Base<S: BaseViewState,E: BaseEvent,A: BaseAction,F: BaseEffect>(
-        private val contractProvider: ContractProvider<S,E,A,F>
-    ): ScreenScope<S,E,A,F>{
+    @Composable
+    fun fetchState(): S
+    @Composable
+    fun collectEffect(collector: FlowCollector<F>)
+
+    class Base<S : BaseViewState, E : BaseEvent, A : BaseAction, F : BaseEffect>(
+        private val contractProvider: ContractProvider<S, E, A, F>
+    ) : ScreenScope<S, E, A, F> {
         override fun dispatchEvent(event: E) {
             contractProvider.dispatchEvent(event)
         }
 
         @Composable
-        override fun fetchState(): S  {
-          val state = contractProvider.fetchStateFlow().collectAsStateWithLifecycle().value
+        override fun fetchState(): S {
+            val state = contractProvider.fetchStateFlow().collectAsStateWithLifecycle().value
             LaunchedEffect(state) {
-                Log.d("State","changed ${state}")
+                Log.d("State", "changed ${state}")
             }
             return state
         }

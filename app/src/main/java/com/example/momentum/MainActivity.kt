@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.module_injector.navigation.NavigationManager
 import com.example.momentum.di.modules.FeatureEntryProvider
 import com.example.momentum.presentation.contract.MainEffect
 import com.example.momentum.presentation.ui.tabs.viewmodel.TabScreenViewModel
@@ -21,16 +24,13 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var featureEntryProvider: FeatureEntryProvider
-
-    val tabScreenViewModel : TabScreenViewModel by viewModels()
+    @Inject lateinit var navigationManager : NavigationManager
+    private lateinit var  navigator : Navigator
     val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-       /* installSplashScreen().setKeepOnScreenCondition {
-            mainViewState.waitSplash
-        }*/
         setContent {
             ScreenContent(contractProvider = mainViewModel) { mainViewState ->
 
@@ -39,19 +39,21 @@ class MainActivity : ComponentActivity() {
                     themeUiType = mainViewState.theme,
                     colorsUiType = mainViewState.color
                 ) {
-                    MainScreen(featureEntry = featureEntryProvider)
+                    val showMainScreen = remember { mutableStateOf(false) }
                     collectEffect { mainEffect ->
                         when (mainEffect) {
                             MainEffect.GoToMainPage -> {
-                                Log.d("WORK","called go to main page")
+                                showMainScreen.value = true
                             }
                             MainEffect.DoNothing -> {}
                         }
+                    }
+                    if(showMainScreen.value){
+                        MainScreen(featureEntry = featureEntryProvider,navigationManager)
                     }
                 }
             }
         }
     }
-
 }
 

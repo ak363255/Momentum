@@ -28,14 +28,7 @@ sealed class TabScreenActions : BaseAction{
     data object NavigateToSettingsTab : TabScreenActions()
 }
 
-sealed class TabScreenEffect : BaseEffect{
-    data object ShowHomeFeature : TabScreenEffect()
-    data object ShowAnalyticsFeature : TabScreenEffect()
-    data object ShowSettingsFeature : TabScreenEffect()
-    data object ShowTemplateFeature : TabScreenEffect()
-    data object ShowOverviewFeature : TabScreenEffect()
-    data object ShowCategoriesFeature : TabScreenEffect()
-}
+sealed class TabScreenEffect : BaseEffect
 
 
 

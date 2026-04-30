@@ -19,15 +19,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingWorkProcessor: SettingsWorkProcessor,
-    private val mainStateCommunicator: MainStateCommunicator,
-    private val mainEffectCommunicator: MainEffectCommunicator,
+    mainStateCommunicator: MainStateCommunicator,
+    mainEffectCommunicator: MainEffectCommunicator,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<MainEvent, MainAction, MainEffect, MainViewState>(
     dispatcher = dispatcher,
     effectCommunicator = mainEffectCommunicator,
     stateCommunicator = mainStateCommunicator,
 
-) {
+    ) {
     init {
         dispatchEvent(MainEvent.LoadSetting)
     }
@@ -36,8 +36,8 @@ class MainViewModel @Inject constructor(
         action: MainAction,
         currentState: MainViewState
     ): MainViewState {
-        return when(action){
-            is MainAction.ChangeSettings ->{
+        return when (action) {
+            is MainAction.ChangeSettings -> {
                 currentState.copy(
                     language = action.languageUiType,
                     theme = action.themeUiType,
@@ -50,10 +50,11 @@ class MainViewModel @Inject constructor(
     override suspend fun WorkScope<MainViewState, MainAction, MainEffect>.handleEvent(
         event: MainEvent
     ) {
-        when(event){
+        when (event) {
             MainEvent.LoadSetting -> {
-                launchBackgroundWork(scope = scope,dispatcher = dispatcher){
-                    settingWorkProcessor.doWork(SettingsWorksCommand.LoadSettings).collectAndHandleWork()
+                launchBackgroundWork(scope = scope, dispatcher = dispatcher) {
+                    settingWorkProcessor.doWork(SettingsWorksCommand.LoadSettings)
+                        .collectAndHandleWork()
                 }
             }
         }

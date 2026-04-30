@@ -4,35 +4,29 @@
 
 package com.example.impl.presentation
 
-import FeatureRootRoute
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.impl.data.routes.EditorFeatureRoutes
-import com.example.module_injector.navigation.Navigable
-import com.example.module_injector.navigation.OnNavigateTo
-import com.example.ui.views.LocalRootNavigator
+import com.example.impl.navigation.EditorFeatureRoutes
+import com.example.module_injector.FeatureRootRoutes
 
-
-val LocalEditorNavigator = staticCompositionLocalOf<OnNavigateTo> { throw IllegalStateException() }
-internal fun NavGraphBuilder.editor(onNavigateTo: OnNavigateTo) {
-    navigation<FeatureRootRoute.EditorRootRoute>(startDestination = EditorFeatureRoutes.EditorMainPage){
-        composable<EditorFeatureRoutes.EditorMainPage> {
-            val rootNavHostController = LocalRootNavigator.current.provideRootNavHostController()
-            val onNavigateTo = remember {onNavigateTo}
-            CompositionLocalProvider(LocalEditorNavigator provides onNavigateTo) {
-                EditorScreen()
-            }
+internal fun NavGraphBuilder.editor() {
+    navigation<FeatureRootRoutes.EditorFeatureRootRoute>(startDestination = EditorFeatureRoutes.EditorRoute) {
+        composable<EditorFeatureRoutes.EditorRoute> {
+            EditorScreen()
         }
     }
 }
 
 @Composable
 fun EditorScreen() {
-
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(text = "Hello Editor", color = MaterialTheme.colorScheme.onSurface)
+    }
 }

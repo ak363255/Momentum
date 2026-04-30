@@ -7,8 +7,11 @@ package com.example.momentum.routes
 import com.example.module_injector.navigation.Navigable
 import kotlinx.serialization.Serializable
 
-object AppRoutes {
+interface AppRoutes : Navigable {
     @Serializable
-    object AppRootRoutes : Navigable
+    object AppRootRoutes : AppRoutes {
+        override val route: String
+            get() = this.javaClass.simpleName
+    }
 
 }
