@@ -10,6 +10,7 @@ package com.example.impl.presentation.viewmodel
 
 import com.example.api.di.QrScanApi
 import com.example.api.navigation.EditorFeatureEntry
+import com.example.impl.domain.model.HomeFailures
 import com.example.impl.presentation.viewmodel.contract.HomeAction
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
 import com.example.impl.presentation.viewmodel.contract.HomeEffectCommunicator
@@ -20,10 +21,12 @@ import com.example.impl.presentation.viewmodel.processor.ScheduleWorkCommand
 import com.example.impl.presentation.viewmodel.processor.ScheduleWorkProcessor
 import com.example.module_injector.navigation.NavigationManager
 import com.example.utils.di.annotations.IoDispatcher
+import com.example.utils.functional.Either
 import com.example.utils.platform.viemodel.BaseViewModel
 import com.example.utils.platform.viemodel.work.WorkScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.flow
 import java.sql.Date
 import javax.inject.Inject
 

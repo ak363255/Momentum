@@ -37,4 +37,35 @@ object HindiLanguage : CoreStrings {
         get() = "m"
     override val hourSymbol: String
         get() = "h"
+
+    override val categoryWorkTitle: String
+        get() = "काम"
+    override val categoryRestTitle: String
+        get() = "आराम"
+    override val categoryChoresTitle: String
+        get() = "घर के काम"
+    override val categoryTransportTitle: String
+        get() = "यात्रा"
+    override val categoryStudyTitle: String
+        get() = "पढ़ाई"
+    override val categoryEatTitle: String
+        get() = "खाना"
+    override val categoryEntertainmentsTitle: String
+        get() = "मनोरंजन"
+    override val categorySportTitle: String
+        get() = "खेल"
+    override val categorySleepTitle: String
+        get() = "नींद"
+    override val categoryCultureTitle: String
+        get() = "संस्कृति"
+    override val categoryOtherTitle: String
+        get() = "अन्य"
+    override val categoryEmptyTitle: String
+        get() = "अनुपस्थित"
+    override val categoryHygieneTitle: String
+        get() = "स्वच्छता"
+    override val categoryHealthTitle: String
+        get() = "स्वास्थ्य देखभाल"
+    override val categoryShoppingTitle: String
+        get() = "खरीदारी"
 }

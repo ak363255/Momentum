@@ -4,7 +4,7 @@
 
 package com.example.ui.theme.tokens
 
-object EnglishLanguage : CoreStrings{
+object EnglishLanguage : CoreStrings {
     override val appName: String
         get() = "Momentum"
     override val topBarTitle: String
@@ -33,4 +33,34 @@ object EnglishLanguage : CoreStrings{
         get() = "m"
     override val hourSymbol: String
         get() = "h"
+    override val categoryWorkTitle: String
+        get() = "Work"
+    override val categoryRestTitle: String
+        get() = "Rest"
+    override val categoryChoresTitle: String
+        get() = "Chores"
+    override val categoryTransportTitle: String
+        get() = "Transport"
+    override val categoryStudyTitle: String
+        get() = "Study"
+    override val categoryEatTitle: String
+        get() = "Eating"
+    override val categoryEntertainmentsTitle: String
+        get() = "Entertainment"
+    override val categorySportTitle: String
+        get() = "Sport"
+    override val categorySleepTitle: String
+        get() = "Sleep"
+    override val categoryCultureTitle: String
+        get() = "Culture"
+    override val categoryOtherTitle: String
+        get() = "Misc"
+    override val categoryEmptyTitle: String
+        get() = "Absent"
+    override val categoryHygieneTitle: String
+        get() = ""
+    override val categoryHealthTitle: String
+        get() = "Self-Care"
+    override val categoryShoppingTitle: String
+        get() = "Shopping"
 }

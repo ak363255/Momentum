@@ -21,4 +21,21 @@ interface CoreStrings {
 
     val minuteSymbol : String
     val hourSymbol : String
+
+    val categoryWorkTitle: String
+    val categoryRestTitle: String
+    val categoryChoresTitle: String
+    val categoryTransportTitle: String
+    val categoryStudyTitle: String
+    val categoryEatTitle: String
+    val categoryEntertainmentsTitle: String
+    val categorySportTitle: String
+    val categorySleepTitle: String
+    val categoryCultureTitle: String
+    val categoryOtherTitle: String
+    val categoryEmptyTitle: String
+    val categoryHygieneTitle: String
+    val categoryHealthTitle: String
+    val categoryShoppingTitle: String
+
 }

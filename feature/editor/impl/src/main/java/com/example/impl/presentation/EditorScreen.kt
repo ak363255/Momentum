@@ -17,7 +17,7 @@ import com.example.impl.navigation.EditorFeatureRoutes
 import com.example.module_injector.FeatureRootRoutes
 
 internal fun NavGraphBuilder.editor() {
-    navigation<FeatureRootRoutes.EditorFeatureRootRoute>(startDestination = EditorFeatureRoutes.EditorRoute) {
+    navigation<FeatureRootRoutes.EditorFeatureRootRoute>(startDestination = EditorFeatureRoutes.EditorRoute::class) {
         composable<EditorFeatureRoutes.EditorRoute> {
             EditorScreen()
         }

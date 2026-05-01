@@ -49,7 +49,7 @@ interface BaseStore<S, E, A, F> : StateProvider<S>, EffectProvider<F> {
         private val mutex = Mutex()
         private val eventChannel: Channel<E> =
             Channel(capacity = Channel.UNLIMITED, onBufferOverflow = BufferOverflow.SUSPEND)
-        private val workScope = WorkScope.Base<S, E, A, F>(store = this)
+        private val workScope = WorkScope.Base(store = this)
 
         init {
             eventChannel
