@@ -10,7 +10,7 @@ import com.example.impl.domain.interactors.EditorInteractor
 import com.example.module_injector.navigation.NavigationManager
 import javax.inject.Inject
 
-internal class EditorFeatureStarterApiImpl @Inject constructor(
+internal class EditorFeatureStarterApiImpl (
     private val navigationManager: NavigationManager,
 ): EditorFeatureStarterApi {
     override suspend fun navigateToEditorScreen(editor : EditorScreens.Editor) {
