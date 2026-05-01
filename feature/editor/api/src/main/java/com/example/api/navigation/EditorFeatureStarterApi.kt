@@ -5,5 +5,5 @@
 package com.example.api.navigation
 
 interface EditorFeatureStarterApi {
-    suspend fun navigateToEditorScreen(timeTaskKey: Long?, startTime : Long)
+    suspend fun navigateToEditorScreen( editor: EditorScreens.Editor)
 }

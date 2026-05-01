@@ -1,5 +1,6 @@
 package com.example.impl.presentation.models.editmodel
 
+import com.example.domain.models.schedule.TaskNotifications
 import com.example.domain.models.schedule.TaskPriority
 
 data class EditParameters(

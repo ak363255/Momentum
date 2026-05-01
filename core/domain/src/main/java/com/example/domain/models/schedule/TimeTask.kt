@@ -12,11 +12,11 @@ import java.util.Date
 data class TimeTask(
     val key : Long,
     val date : Date,
-    val createdAt : Date,
+    val createdAt : Date?,
     val mainCategory : MainCategory,
     val subCategory : SubCategory?,
     val isEnableNotification : Boolean,
-    val notificationTasks : TimeTaskNotification,
+    val notificationTasks : TaskNotifications,
     val isConsiderInStatistics : Boolean,
     val timeRange : TimeRange,
     val note : String?,

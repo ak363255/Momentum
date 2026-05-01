@@ -6,7 +6,7 @@ package com.example.impl.presentation.mappers.schedule
 
 import com.example.domain.common.TimeTaskStatusChecker
 import com.example.domain.models.schedule.TimeTask
-import com.example.domain.models.schedule.TimeTaskNotification
+import com.example.domain.models.schedule.TaskNotifications
 import com.example.impl.presentation.mappers.category.mapToDomain
 import com.example.impl.presentation.mappers.category.mapToUi
 import com.example.impl.presentation.model.schedule.TimeTaskNotificationUi
@@ -62,8 +62,8 @@ internal fun TimeTaskUi.mapToDomain() = TimeTask(
     isCompleted = this.isCompleted
 )
 
-internal fun TimeTaskNotification.mapToUi() = TimeTaskNotificationUi(
-    fifteenMinutesBeforeNotify = this.fifteenMinBefore,
+internal fun TaskNotifications.mapToUi() = TimeTaskNotificationUi(
+    fifteenMinutesBeforeNotify = this.fifteenMinutesBefore,
     oneHourBeforeNotify = this.oneHourBefore,
     threeHourBeforeNotify = this.threeHourBefore,
     oneDayBeforeNotify = this.oneDayBefore,
@@ -71,8 +71,8 @@ internal fun TimeTaskNotification.mapToUi() = TimeTaskNotificationUi(
     beforeEnd = this.beforeEnd
 )
 
-internal fun TimeTaskNotificationUi.mapToDomain() = TimeTaskNotification(
-    fifteenMinBefore = this.fifteenMinutesBeforeNotify,
+internal fun TimeTaskNotificationUi.mapToDomain() = TaskNotifications(
+    fifteenMinutesBefore = this.fifteenMinutesBeforeNotify,
     oneHourBefore = this.oneHourBeforeNotify,
     threeHourBefore = this.threeHourBeforeNotify,
     oneDayBefore = this.oneDayBeforeNotify,

@@ -8,7 +8,7 @@ import com.example.domain.models.categories.MainCategory
 import com.example.domain.models.categories.SubCategory
 import com.example.domain.models.schedule.TaskPriority
 import com.example.domain.models.template.RepeatTime
-import com.example.impl.presentation.models.editmodel.TaskNotifications
+import com.example.domain.models.schedule.TaskNotifications
 import java.util.Date
 
 data class EditModel(

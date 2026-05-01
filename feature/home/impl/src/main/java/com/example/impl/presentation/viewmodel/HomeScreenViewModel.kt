@@ -9,7 +9,10 @@
 package com.example.impl.presentation.viewmodel
 
 import com.example.api.di.QrScanApi
+import com.example.api.navigation.EditorFeatureApi
 import com.example.api.navigation.EditorFeatureEntry
+import com.example.api.navigation.EditorScreens
+import com.example.domain.models.schedule.TimeTask
 import com.example.impl.domain.model.HomeFailures
 import com.example.impl.presentation.viewmodel.contract.HomeAction
 import com.example.impl.presentation.viewmodel.contract.HomeEffect
@@ -38,7 +41,8 @@ internal class HomeScreenViewModel @Inject constructor(
     private val homeStatCommunicator: HomeStateCommunicator,
     private val editorFeatureEntry: EditorFeatureEntry,
     private val navigationManager: NavigationManager,
-    private val qrScanApi: QrScanApi
+    private val qrScanApi: QrScanApi,
+    private val editorFeaApi : EditorFeatureApi
 ) : BaseViewModel<HomeEvent, HomeAction, HomeEffect, HomeState>(
     dispatcher = ioDispatcher,
     effectCommunicator = homeEffectCommunicator,
@@ -94,8 +98,12 @@ internal class HomeScreenViewModel @Inject constructor(
                 scheduleWorkProcessor.doWork(ScheduleWorkCommand.LoadScheduleByDate(event.date)).collectAndHandleWork()
             }
             is HomeEvent.PressAddTimeTaskButton -> {
+                editorFeaApi.getEditorFeatureNavigationApi().navigateToEditorScreen(EditorScreens.Editor(
+                    timeTask = null,
+                    template = null
+                ))
                 //navigationManager.navigate(FeatureRootRoute.EditorRootRoute(),null)
-                qrScanApi.fetchQrScanStarter().navigateToQrScan()
+               // qrScanApi.fetchQrScanStarter().navigateToQrScan()
             }
             is HomeEvent.PressEditTimeTaskButton -> {}
             HomeEvent.PressViewToggleButton -> {}

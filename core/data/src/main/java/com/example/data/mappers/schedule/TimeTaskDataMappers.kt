@@ -21,7 +21,7 @@ fun TimeTask.mapToData() = TimeTaskEntity(
     nextScheduleDate = if(timeRange.to.isCurrentDay()) null else date.shiftDay(1).time,
     startTime = this.timeRange.from.time,
     endTime = this.timeRange.to.time,
-    createdAt = createdAt.time,
+    createdAt = createdAt?.time,
     mainCategoryId = mainCategory.categoryId,
     subCategoryId = subCategory?.id,
     isCompleted = isCompleted,
@@ -29,7 +29,7 @@ fun TimeTask.mapToData() = TimeTaskEntity(
     isEnableNotification = isEnableNotification,
     note = note,
     isConsiderInStatistics = isConsiderInStatistics,
-    fifteenMinBeforeNotify = notificationTasks.fifteenMinBefore,
+    fifteenMinBeforeNotify = notificationTasks.fifteenMinutesBefore,
     oneHourBeforeNotify = notificationTasks.oneHourBefore,
     threeHourBeforeNotify = notificationTasks.threeHourBefore,
     oneDayBeforeNotify = notificationTasks.oneDayBefore,
@@ -52,8 +52,8 @@ fun TimeTaskDetails.mapToDomain() : TimeTask{
             timeTaskEntity.endTime.mapToDate()
         ),
         isEnableNotification = timeTaskEntity.isEnableNotification,
-        notificationTasks = com.example.domain.models.schedule.TimeTaskNotification(
-            fifteenMinBefore = timeTaskEntity.fifteenMinBeforeNotify,
+        notificationTasks = com.example.domain.models.schedule.TaskNotifications(
+            fifteenMinutesBefore = timeTaskEntity.fifteenMinBeforeNotify,
             oneHourBefore = timeTaskEntity.oneHourBeforeNotify,
             threeHourBefore = timeTaskEntity.threeHourBeforeNotify,
             oneDayBefore = timeTaskEntity.oneDayBeforeNotify,

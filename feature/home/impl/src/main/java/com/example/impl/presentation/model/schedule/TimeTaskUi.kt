@@ -14,7 +14,7 @@ import java.util.Date
 internal data class TimeTaskUi(
     val key: Long,
     val date: Date,
-    val createdAt: Date,
+    val createdAt: Date?,
     val startTime: Date,
     val endTime: Date,
     val leftTime : Long,
