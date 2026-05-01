@@ -5,7 +5,7 @@
 package com.example.domain.models.categories
 
 data class MainCategory(
-    val categoryId : Int,
+    val categoryId : Int = 0,
     val default : DefaultCategoryType = DefaultCategoryType.EMPTY,
-    val customName : String?
+    val customName : String? = null
 )
