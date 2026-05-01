@@ -13,7 +13,7 @@ import javax.inject.Inject
 internal class EditorFeatureStarterApiImpl (
     private val navigationManager: NavigationManager,
 ): EditorFeatureStarterApi {
-    override suspend fun navigateToEditorScreen(editor : EditorScreens.Editor) {
+    override suspend fun navigateToEditorScreen(editor: EditorScreens.Editor) {
         navigationManager.navigate(EditorFeatureRoutes.EditorRoute)
     }
 }
